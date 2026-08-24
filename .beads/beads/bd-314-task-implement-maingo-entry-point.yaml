@@ -7,10 +7,10 @@ id: bd-314
 type: task
 title: 'Task: Implement main.go Entry Point'
 description: 'Implement main.go that wires the router: registers all handler functions with appropriate routes, applies middleware stack (logging → recovery → CORS), reads PORT from env, and starts the HTTP server. The server should shut down gracefully on SIGINT/SIGTERM.'
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-1267cef5
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T19:08:22.092840947Z
-updatedat: 2026-08-24T21:28:05.335351199Z
-closedat: null
+updatedat: 2026-08-24T21:28:06.851956413Z
+closedat: 2026-08-24T21:28:06.851955785Z
