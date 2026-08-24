@@ -7,10 +7,10 @@ id: bd-323
 type: task
 title: 'Task: Test DeleteTask Handler'
 description: Write tests for the DeleteTask handler including successful deletion returning 204 and 404 case when task doesn't exist.
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-1267cef5
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T21:00:35.766873007Z
-updatedat: 2026-08-24T22:16:00.25646659Z
-closedat: null
+updatedat: 2026-08-24T22:16:01.784541593Z
+closedat: 2026-08-24T22:16:01.784540441Z
