@@ -1,0 +1,26 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-278
+type: task
+title: '[Bootstrap] Write System Requirements Document'
+description: 'Based on the full PRD at plans/ORIGINAL_PRD.md, write a detailed System Requirements Document (SRD). The SRD must cover: system architecture, data models, API contracts, integration points, infrastructure requirements, security requirements, and implementation constraints. Save to plans/SRD.md and commit. Then create a bead for the Technical Project Manager titled ''[Bootstrap] Decompose SRD into Epics, Stories, and Tasks'' assigned to technical-project-manager, instructing them to create the full bead hierarchy from the SRD.'
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-b69e6624
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T17:31:30.983921332Z
+updatedat: 2026-08-24T17:34:41.692127623Z
+closedat: null
