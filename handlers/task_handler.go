@@ -82,6 +82,19 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if strings.TrimSpace(input.Title) == "" {
+		writeError(w, http.StatusBadRequest, "title is required")
+		return
+	}
+	if len(input.Title) > 255 {
+		writeError(w, http.StatusBadRequest, "title must be 255 characters or less")
+		return
+	}
+	if len(input.Description) > 10000 {
+		writeError(w, http.StatusBadRequest, "description must be 10000 characters or less")
+		return
+	}
+
 	task := &models.Task{
 		Title:       input.Title,
 		Description: input.Description,
