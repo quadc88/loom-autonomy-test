@@ -371,3 +371,127 @@ func TestListTasks_FilterAndLimit(t *testing.T) {
 		t.Errorf("expected id %s, got %s", id2, tasks[0].ID)
 	}
 }
+
+// CreateTask validation tests
+func TestCreateTask_SuccessWithDescription(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	reqBody, _ := json.Marshal(map[string]string{
+		"title":       "Test Task",
+		"description": "This is a test description",
+	})
+	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusCreated {
+		t.Fatalf("expected 201, got %d", resp.StatusCode)
+	}
+	var task models.Task
+	json.NewDecoder(resp.Body).Decode(&task)
+	if task.Title != "Test Task" {
+		t.Errorf("expected title 'Test Task', got %s", task.Title)
+	}
+	if task.Description != "This is a test description" {
+		t.Errorf("expected description, got %s", task.Description)
+	}
+	if task.ID == "" {
+		t.Error("expected non-empty ID")
+	}
+	if task.Completed {
+		t.Error("expected task not completed")
+	}
+	if task.CreatedAt.IsZero() {
+		t.Error("expected non-zero CreatedAt")
+	}
+}
+
+func TestCreateTask_TitleTooLong(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	longTitle := string(make([]byte, 256))
+	reqBody, _ := json.Marshal(map[string]string{"title": longTitle})
+	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", resp.StatusCode)
+	}
+	var errResp models.ErrorResponse
+	json.NewDecoder(resp.Body).Decode(&errResp)
+	if errResp.Error == "" {
+		t.Error("expected error message")
+	}
+}
+
+func TestCreateTask_DescriptionTooLong(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	longDesc := string(make([]byte, 10001))
+	reqBody, _ := json.Marshal(map[string]string{
+		"title":       "Short Title",
+		"description": longDesc,
+	})
+	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", resp.StatusCode)
+	}
+}
+
+func TestCreateTask_InvalidJSON(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer([]byte("{invalid")))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", resp.StatusCode)
+	}
+}
+
+func TestCreateTask_WhitespaceOnlyTitle(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	reqBody, _ := json.Marshal(map[string]string{"title": "   "})
+	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", resp.StatusCode)
+	}
+}
+
+func TestCreateTask_EmptyBody(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	req, _ := http.NewRequest("POST", server.URL+"/tasks", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", resp.StatusCode)
+	}
+}
