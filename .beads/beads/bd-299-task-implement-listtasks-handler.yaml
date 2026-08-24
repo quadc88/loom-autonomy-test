@@ -1,0 +1,26 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-299
+type: task
+title: 'Task: Implement ListTasks Handler'
+description: Write the ListTasks HTTP handler with filtering by completed status and limit support.
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-1267cef5
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T18:48:27.450201551Z
+updatedat: 2026-08-24T20:00:21.647481083Z
+closedat: null
