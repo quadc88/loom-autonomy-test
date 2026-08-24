@@ -7,10 +7,10 @@ id: bd-311
 type: task
 title: 'Task: Implement Task Handlers'
 description: 'Implement all task handler functions: CreateTask (POST /tasks, 201), ListTasks (GET /tasks, 200), GetTask (GET /tasks/{id}, 200/404), UpdateTask (PUT /tasks/{id}, 200/400/404), and DeleteTask (DELETE /tasks/{id}, 204/404). Each must decode JSON, validate input, interact with the store, and return proper HTTP status codes and JSON responses.'
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-022dbea2
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T19:08:11.167548727Z
-updatedat: 2026-08-24T19:50:15.031056022Z
-closedat: null
+updatedat: 2026-08-24T19:50:16.254700705Z
+closedat: 2026-08-24T19:50:16.254699821Z
