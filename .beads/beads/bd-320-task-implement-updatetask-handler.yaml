@@ -7,10 +7,10 @@ id: bd-320
 type: task
 title: 'Task: Implement UpdateTask Handler'
 description: Implement the UpdateTask HTTP handler that validates input, looks up the task by ID, updates fields (including completed status), and returns 200 with updated task or 404 if not found.
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-488b69c6
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T21:00:23.229576672Z
-updatedat: 2026-08-24T21:18:40.317246382Z
-closedat: null
+updatedat: 2026-08-24T21:18:40.656057595Z
+closedat: 2026-08-24T21:18:40.656055585Z
