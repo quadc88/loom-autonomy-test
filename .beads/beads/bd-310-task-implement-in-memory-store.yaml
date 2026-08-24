@@ -7,10 +7,10 @@ id: bd-310
 type: task
 title: 'Task: Implement In-Memory Store'
 description: 'Implement an in-memory TaskStore using sync.RWMutex with methods: Create, List (with completed/limit filters), Get, Update, Delete, and HealthCheck. Return appropriate errors for missing IDs and validation failures.'
-status: in_progress
+status: open
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-022dbea2
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T19:07:50.729288851Z
-updatedat: 2026-08-24T21:02:54.801290146Z
+updatedat: 2026-08-24T21:02:55.139417498Z
 closedat: null
