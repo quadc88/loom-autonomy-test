@@ -7,10 +7,10 @@ id: bd-298
 type: task
 title: 'Task: Test In-Memory Store'
 description: Write unit and integration tests for the in-memory store covering all CRUD operations.
-status: open
+status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-022dbea2
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T18:48:11.636341871Z
-updatedat: 2026-08-24T19:20:39.255477706Z
+updatedat: 2026-08-24T19:34:43.056861752Z
 closedat: null
