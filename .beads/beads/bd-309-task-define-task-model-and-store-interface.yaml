@@ -1,0 +1,31 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-309
+type: task
+title: 'Task: Define Task Model and Store Interface'
+description: Define the Task struct with JSON tags, validation rules (title required, max 255 chars; description optional, max 10000 chars; auto-generated UUID v4; ISO 8601 timestamps), and the TaskStore interface in models/.
+status: open
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-08-24T19:17:55.557251409Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260824191755516367828Qhb9IyeD)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-08-24T19:17:55Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260824191755516367828Qhb9IyeD)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T19:07:36.987969158Z
+updatedat: 2026-08-24T19:17:55.55727285Z
+closedat: null
