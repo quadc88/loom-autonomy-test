@@ -7,10 +7,10 @@ id: bd-305
 type: story
 title: 'Story: Get Task by ID (GET /tasks/{id})'
 description: As a developer, I can get a task by its ID via GET /tasks/{id} so that I can retrieve individual task details.
-status: open
+status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-be10be1f
 blockedby: []
 blocks: []
 relatedto: []
@@ -27,5 +27,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T19:06:35.128670773Z
-updatedat: 2026-08-24T19:45:53.467453166Z
+updatedat: 2026-08-24T19:45:58.171075671Z
 closedat: null
