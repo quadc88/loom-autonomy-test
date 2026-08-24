@@ -45,20 +45,21 @@ description: |-
     - Be thorough but practical — define clear MVP boundaries
     - Use clear, unambiguous language with measurable success criteria
     - Document technical constraints and risks
-status: in_progress
+status: open
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-488b69c6
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
 parent: ""
 children: []
 tags: []
-context: {}
+context:
+    completion_gate_feedback: 'Completion rejected: required child bead "[Bootstrap] Write System Requirements Document" does not exist; create it before using done'
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T07:59:54.647958443Z
-updatedat: 2026-08-24T14:56:46.92175277Z
+updatedat: 2026-08-24T14:56:48.213323954Z
 closedat: null
