@@ -7,10 +7,10 @@ id: bd-319
 type: task
 title: 'Task: Test GetTask Handler'
 description: Write tests for the GetTask handler including 404 case when task not found.
-status: open
+status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-be10be1f
 blockedby: []
 blocks: []
 relatedto: []
@@ -27,5 +27,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T21:00:19.336872684Z
-updatedat: 2026-08-24T21:03:45.293993426Z
+updatedat: 2026-08-24T21:03:52.756639481Z
 closedat: null
