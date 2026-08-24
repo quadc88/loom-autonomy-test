@@ -7,10 +7,10 @@ id: bd-299
 type: task
 title: 'Task: Implement ListTasks Handler'
 description: Write the ListTasks HTTP handler with filtering by completed status and limit support.
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-1267cef5
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -22,5 +22,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T18:48:27.450201551Z
-updatedat: 2026-08-24T20:04:00.991225983Z
-closedat: null
+updatedat: 2026-08-24T20:04:02.168744339Z
+closedat: 2026-08-24T20:04:02.168743692Z
