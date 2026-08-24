@@ -95,10 +95,7 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	task := &models.Task{
-		Title:       input.Title,
-		Description: input.Description,
-	}
+	task := models.NewTask(input.Title, input.Description)
 	if err := h.store.Create(task); err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return

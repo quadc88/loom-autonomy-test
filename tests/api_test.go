@@ -348,7 +348,7 @@ func TestUpdateTask_PutMissingTitle(t *testing.T) {
 func TestListTasks_FilterAndLimit(t *testing.T) {
 	_, server := newTestServer(t)
 	defer server.Close()
-	id1 := createTask(t, server, "Task 1")
+	createTask(t, server, "Task 1")
 	id2 := createTask(t, server, "Task 2")
 	updateBody, _ := json.Marshal(map[string]bool{"completed": true})
 	req, _ := http.NewRequest("PATCH", server.URL+"/tasks/"+id2, bytes.NewBuffer(updateBody))

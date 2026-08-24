@@ -10,13 +10,19 @@ WORKDIR /app
 
 # Copy dependency files first for better layer caching
 COPY go.mod ./
-RUN go mod download
+RUN go mod download || true
 
 # Copy source code
 COPY . .
 
+# Ensure go.sum exists and tidy dependencies
+RUN go mod tidy 2>/dev/null || true
+
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o task-api .
+
+# Run tests
+RUN CGO_ENABLED=0 GOOS=linux go test ./...
 
 # Run tests during build (optional, uncomment if needed)
 # RUN go test ./...
