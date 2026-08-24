@@ -7,20 +7,25 @@ id: bd-293
 type: story
 title: 'Story: Health Check Endpoint (GET /health)'
 description: As a developer, I can check system health via GET /health so that I can monitor the API status.
-status: in_progress
+status: open
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-488b69c6
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
 parent: ""
 children: []
 tags: []
-context: {}
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-08-24T19:09:16.570492628Z","error":"LLM call failed on iteration 8: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260824190916523187527tRb1fYcQ)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-08-24T19:09:16Z"
+    last_run_error: 'LLM call failed on iteration 8: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260824190916523187527tRb1fYcQ)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T18:47:06.713613661Z
-updatedat: 2026-08-24T19:09:15.029685296Z
+updatedat: 2026-08-24T19:09:16.570506159Z
 closedat: null
