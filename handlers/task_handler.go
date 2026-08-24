@@ -53,10 +53,10 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
-	case http.MethodPatch:
+	case http.MethodPatch, http.MethodPut:
 		id := extractID(path)
 		if id != "" {
-			h.UpdateTask(w, r)
+			h.HandleUpdate(w, r)
 			return
 		}
 		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
@@ -126,6 +126,47 @@ func (h *TaskHandler) GetTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, task)
+}
+
+func (h *TaskHandler) HandleUpdate(w http.ResponseWriter, r *http.Request) {
+	id := extractID(r.URL.Path)
+	if id == "" {
+		writeError(w, http.StatusBadRequest, "task ID is required")
+		return
+	}
+
+	switch r.Method {
+	case http.MethodPatch:
+		var input models.TaskUpdate
+		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+			writeError(w, http.StatusBadRequest, "invalid request body")
+			return
+		}
+		task, err := h.store.Update(id, &input)
+		if err != nil {
+			writeError(w, http.StatusNotFound, "task not found")
+			return
+		}
+		writeJSON(w, http.StatusOK, task)
+	case http.MethodPut:
+		var input models.Task
+		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+			writeError(w, http.StatusBadRequest, "invalid request body")
+			return
+		}
+		if input.Title == "" {
+			writeError(w, http.StatusBadRequest, "title is required")
+			return
+		}
+		task, err := h.store.Replace(id, &input)
+		if err != nil {
+			writeError(w, http.StatusNotFound, "task not found")
+			return
+		}
+		writeJSON(w, http.StatusOK, task)
+	default:
+		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
+	}
 }
 
 func (h *TaskHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {

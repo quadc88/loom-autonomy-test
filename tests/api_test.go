@@ -271,6 +271,70 @@ func TestListTasks_Limit(t *testing.T) {
 	}
 }
 
+func TestUpdateTask_FullReplace(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	id := createTask(t, server, "Original Title")
+
+	newTask := map[string]interface{}{
+		"id":          id,
+		"title":       "Updated Title",
+		"description": "Updated Description",
+		"completed":   true,
+	}
+	updateBody, _ := json.Marshal(newTask)
+	req, _ := http.NewRequest("PUT", server.URL+"/tasks/"+id, bytes.NewBuffer(updateBody))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+
+	req, _ = http.NewRequest("GET", server.URL+"/tasks/"+id, nil)
+	resp, err = http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	var task models.Task
+	json.NewDecoder(resp.Body).Decode(&task)
+	if task.Title != "Updated Title" {
+		t.Errorf("expected title 'Updated Title', got %s", task.Title)
+	}
+	if task.Description != "Updated Description" {
+		t.Errorf("expected description 'Updated Description', got %s", task.Description)
+	}
+	if !task.Completed {
+		t.Error("expected task to be completed")
+	}
+}
+
+func TestUpdateTask_PutMissingTitle(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	id := createTask(t, server, "Original Title")
+
+	newTask := map[string]interface{}{
+		"id":          id,
+		"description": "No title",
+	}
+	updateBody, _ := json.Marshal(newTask)
+	req, _ := http.NewRequest("PUT", server.URL+"/tasks/"+id, bytes.NewBuffer(updateBody))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", resp.StatusCode)
+	}
+}
+
 func TestListTasks_FilterAndLimit(t *testing.T) {
 	_, server := newTestServer(t)
 	defer server.Close()

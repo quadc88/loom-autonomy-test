@@ -13,6 +13,7 @@ type TaskStore interface {
 	List(filter *models.TaskFilter) ([]*models.Task, error)
 	Get(id string) (*models.Task, error)
 	Update(id string, updates *models.TaskUpdate) (*models.Task, error)
+	Replace(id string, task *models.Task) (*models.Task, error)
 	Delete(id string) error
 	HealthCheck() map[string]string
 }
@@ -102,6 +103,23 @@ func (s *InMemoryStore) Update(id string, updates *models.TaskUpdate) (*models.T
 	}
 	t.UpdatedAt = time.Now().UTC()
 	return t, nil
+}
+
+func (s *InMemoryStore) Replace(id string, task *models.Task) (*models.Task, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	_, ok := s.tasks[id]
+	if !ok {
+		return nil, fmt.Errorf("task not found")
+	}
+
+	task.ID = id
+	task.CreatedAt = s.tasks[id].CreatedAt
+	task.UpdatedAt = time.Now().UTC()
+
+	s.tasks[id] = task
+	return task, nil
 }
 
 func (s *InMemoryStore) Delete(id string) error {
