@@ -96,6 +96,16 @@ func TestHealthCheck(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("expected 200, got %d", resp.StatusCode)
 	}
+	var result map[string]string
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		t.Fatalf("failed to decode JSON: %v", err)
+	}
+	if result["status"] != "healthy" {
+		t.Errorf("expected status 'healthy', got %s", result["status"])
+	}
+	if result["timestamp"] == "" {
+		t.Error("expected non-empty timestamp")
+	}
 }
 
 func TestGetTask_NotFound(t *testing.T) {
