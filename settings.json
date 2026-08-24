@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "responsible-vibe-mcp": {
+      "command": "npx",
+      "args": ["-y", "responsible-vibe-mcp"]
+    }
+  },
+  "workflowMode": "guided",
+  "enableReviews": true
+}
