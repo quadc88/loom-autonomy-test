@@ -1,0 +1,26 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-287
+type: story
+title: 'Story: Update Task Endpoint (PUT /tasks/{id})'
+description: As a developer, I can update a task (including marking it as completed) via PUT /tasks/{id} so that I can modify existing tasks.
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-be10be1f
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T17:39:56.066697903Z
+updatedat: 2026-08-24T17:49:57.034190575Z
+closedat: null
