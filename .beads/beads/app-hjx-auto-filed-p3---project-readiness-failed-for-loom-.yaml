@@ -10,7 +10,7 @@ description: "Project readiness failed for loom-bootstrap-test-3.\n\nIssues:\n- 
 status: in_progress
 priority: 3
 projectid: loom-bootstrap-test-3
-assignedto: exec-loom-bootstrap-test-3-8f74d72c
+assignedto: exec-loom-bootstrap-test-3-a7ee45f5
 blockedby: []
 blocks: []
 relatedto: []
@@ -26,5 +26,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T07:14:18.195938585Z
-updatedat: 2026-08-24T07:45:23.872312647Z
+updatedat: 2026-08-24T07:45:57.058857905Z
 closedat: null
