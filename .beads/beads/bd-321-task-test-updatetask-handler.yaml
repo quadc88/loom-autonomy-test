@@ -18,14 +18,14 @@ parent: ""
 children: []
 tags: []
 context:
-    dispatch_count: "3"
-    error_history: '[{"timestamp":"2026-08-24T21:00:42.679431196Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260824210042624634938z0kkfWEO)\",\"type\":\"AgnesAI_error\"}}","dispatch":1},{"timestamp":"2026-08-24T21:00:43.079176509Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 2026082421004322501966BejcHGNG)\",\"type\":\"AgnesAI_error\"}}","dispatch":2},{"timestamp":"2026-08-24T21:00:49.079151481Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 2026082421004921192019HbZ8MtBq)\",\"type\":\"AgnesAI_error\"}}","dispatch":3}]'
-    last_run_at: "2026-08-24T21:00:49Z"
-    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 2026082421004921192019HbZ8MtBq)","type":"AgnesAI_error"}}'
+    dispatch_count: "4"
+    error_history: '[{"timestamp":"2026-08-24T21:00:42.679431196Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260824210042624634938z0kkfWEO)\",\"type\":\"AgnesAI_error\"}}","dispatch":1},{"timestamp":"2026-08-24T21:00:43.079176509Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 2026082421004322501966BejcHGNG)\",\"type\":\"AgnesAI_error\"}}","dispatch":2},{"timestamp":"2026-08-24T21:00:49.079151481Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 2026082421004921192019HbZ8MtBq)\",\"type\":\"AgnesAI_error\"}}","dispatch":3},{"timestamp":"2026-08-24T21:03:17.938648102Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260824210317885190440IQ1Pqq0b)\",\"type\":\"AgnesAI_error\"}}","dispatch":4}]'
+    last_run_at: "2026-08-24T21:03:17Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260824210317885190440IQ1Pqq0b)","type":"AgnesAI_error"}}'
     loop_detected: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T21:00:25.11754153Z
-updatedat: 2026-08-24T21:00:49.07916414Z
+updatedat: 2026-08-24T21:03:17.938660599Z
 closedat: null
