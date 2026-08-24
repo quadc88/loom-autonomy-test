@@ -1,0 +1,64 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-213
+type: task
+title: '[Bootstrap] Expand Description into Full PRD'
+description: |-
+    Transform the short project description into a comprehensive, professional PRD and kick off the engineering chain.
+
+    ## Your Inputs
+    - Short project description: plans/BOOTSTRAP.md
+
+    ## Tasks
+    1. Read the short project description in plans/BOOTSTRAP.md
+    2. Expand it into a full, professional Product Requirements Document (PRD) with:
+       - Executive summary and project vision
+       - User personas and target audience
+       - Core features and detailed user stories
+       - Technical requirements and constraints
+       - Architecture considerations
+       - MVP scope definition (P1 = must-have, P2 = nice-to-have, P3 = future)
+       - Non-functional requirements (performance, security, scalability)
+       - Acceptance criteria for each feature
+    3. Save the full PRD to plans/ORIGINAL_PRD.md
+    4. Commit to the repository: "docs: add full PRD expanded from initial description"
+    5. Create a new bead for the Engineering Manager:
+       - Title: "[Bootstrap] Write System Requirements Document"
+       - Type: task
+       - Priority: P0
+       - Description: |
+           Based on the full PRD at plans/ORIGINAL_PRD.md, write a detailed System Requirements Document (SRD).
+           The SRD must cover: system architecture, data models, API contracts, integration points,
+           infrastructure requirements, security requirements, and implementation constraints.
+           Save to plans/SRD.md and commit. Then create a bead for the Technical Project Manager
+           titled "[Bootstrap] Decompose SRD into Epics, Stories, and Tasks" assigned to
+           technical-project-manager, instructing them to create the full bead hierarchy from the SRD.
+
+    ## Deliverables
+    - plans/ORIGINAL_PRD.md (complete PRD)
+    - A new bead for the Engineering Manager to write the SRD
+
+    ## Guidelines
+    - Be thorough but practical — define clear MVP boundaries
+    - Use clear, unambiguous language with measurable success criteria
+    - Document technical constraints and risks
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-d3eb5127
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T07:59:54.647958443Z
+updatedat: 2026-08-24T08:45:24.657411966Z
+closedat: null
