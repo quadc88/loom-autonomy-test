@@ -7,10 +7,10 @@ id: bd-281
 type: epic
 title: 'Epic: Testing'
 description: Write comprehensive tests for the Task API including unit and integration tests.
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-488b69c6
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -22,5 +22,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T17:38:59.876464526Z
-updatedat: 2026-08-24T17:49:46.670326543Z
-closedat: null
+updatedat: 2026-08-24T17:49:49.689770422Z
+closedat: 2026-08-24T17:49:49.689766992Z
