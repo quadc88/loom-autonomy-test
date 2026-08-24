@@ -1,0 +1,26 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-282
+type: epic
+title: 'Epic: Infrastructure/Deployment'
+description: Create multi-stage Dockerfile and ensure project is runnable in Docker with proper environment configuration.
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-022dbea2
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T17:39:10.203002296Z
+updatedat: 2026-08-24T18:03:03.032624181Z
+closedat: null
