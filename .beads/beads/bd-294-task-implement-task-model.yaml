@@ -7,10 +7,10 @@ id: bd-294
 type: task
 title: 'Task: Implement Task Model'
 description: Implement the Task model with validation rules including UUID v4 IDs, ISO 8601 timestamps, title required (max 255 chars), description optional (max 10000 chars).
-status: open
+status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-be10be1f
 blockedby: []
 blocks: []
 relatedto: []
@@ -27,5 +27,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T18:47:15.45197421Z
-updatedat: 2026-08-24T18:49:49.670955999Z
+updatedat: 2026-08-24T18:52:56.404228365Z
 closedat: null
