@@ -98,6 +98,13 @@ func (h *TaskHandler) ListTasks(w http.ResponseWriter, r *http.Request) {
 	if status != "" {
 		filter.Status = &status
 	}
+	limitStr := r.URL.Query().Get("limit")
+	if limitStr != "" {
+		var limit int
+		if _, err := fmt.Sscanf(limitStr, "%d", &limit); err == nil && limit > 0 {
+			filter.Limit = limit
+		}
+	}
 	tasks, err := h.store.List(filter)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, err.Error())

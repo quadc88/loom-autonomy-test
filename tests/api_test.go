@@ -200,3 +200,100 @@ func TestDeleteTask(t *testing.T) {
 		t.Fatalf("expected 404, got %d", resp.StatusCode)
 	}
 }
+
+func TestListTasks_FilterByCompleted(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	// Create two tasks, complete one
+	id1 := createTask(t, server, "Task 1")
+	id2 := createTask(t, server, "Task 2")
+	updateBody, _ := json.Marshal(map[string]bool{"completed": true})
+	req, _ := http.NewRequest("PATCH", server.URL+"/tasks/"+id2, bytes.NewBuffer(updateBody))
+	req.Header.Set("Content-Type", "application/json")
+	http.DefaultClient.Do(req)
+
+	// Filter by completed
+	req, _ = http.NewRequest("GET", server.URL+"/tasks?status=completed", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+	var tasks []models.Task
+	json.NewDecoder(resp.Body).Decode(&tasks)
+	if len(tasks) != 1 {
+		t.Errorf("expected 1 completed task, got %d", len(tasks))
+	}
+	if tasks[0].ID != id2 {
+		t.Errorf("expected id %s, got %s", id2, tasks[0].ID)
+	}
+
+	// Filter by active
+	req, _ = http.NewRequest("GET", server.URL+"/tasks?status=active", nil)
+	resp, err = http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	var tasks2 []models.Task
+	json.NewDecoder(resp.Body).Decode(&tasks2)
+	if len(tasks2) != 1 {
+		t.Errorf("expected 1 active task, got %d", len(tasks2))
+	}
+	if tasks2[0].ID != id1 {
+		t.Errorf("expected id %s, got %s", id1, tasks2[0].ID)
+	}
+}
+
+func TestListTasks_Limit(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	createTask(t, server, "Task 1")
+	createTask(t, server, "Task 2")
+	createTask(t, server, "Task 3")
+
+	req, _ := http.NewRequest("GET", server.URL+"/tasks?limit=2", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+	var tasks []models.Task
+	json.NewDecoder(resp.Body).Decode(&tasks)
+	if len(tasks) != 2 {
+		t.Errorf("expected 2 tasks, got %d", len(tasks))
+	}
+}
+
+func TestListTasks_FilterAndLimit(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	id1 := createTask(t, server, "Task 1")
+	id2 := createTask(t, server, "Task 2")
+	updateBody, _ := json.Marshal(map[string]bool{"completed": true})
+	req, _ := http.NewRequest("PATCH", server.URL+"/tasks/"+id2, bytes.NewBuffer(updateBody))
+	req.Header.Set("Content-Type", "application/json")
+	http.DefaultClient.Do(req)
+	createTask(t, server, "Task 3")
+
+	req, _ = http.NewRequest("GET", server.URL+"/tasks?status=completed&limit=1", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	var tasks []models.Task
+	json.NewDecoder(resp.Body).Decode(&tasks)
+	if len(tasks) != 1 {
+		t.Errorf("expected 1 task, got %d", len(tasks))
+	}
+	if tasks[0].ID != id2 {
+		t.Errorf("expected id %s, got %s", id2, tasks[0].ID)
+	}
+}

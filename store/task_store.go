@@ -70,6 +70,9 @@ func (s *InMemoryStore) List(filter *models.TaskFilter) ([]*models.Task, error) 
 			}
 		}
 		result = append(result, t)
+		if filter != nil && filter.Limit > 0 && len(result) >= filter.Limit {
+			break
+		}
 	}
 	return result, nil
 }

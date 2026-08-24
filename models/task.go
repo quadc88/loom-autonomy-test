@@ -16,6 +16,7 @@ type Task struct {
 
 type TaskFilter struct {
 	Status *string
+	Limit  int
 }
 
 type TaskUpdate struct {
