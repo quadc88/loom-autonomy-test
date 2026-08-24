@@ -7,10 +7,10 @@ id: bd-300
 type: task
 title: 'Task: Test ListTasks Handler'
 description: Write tests for the ListTasks handler including filter by completed status and limit.
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-1267cef5
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T18:48:37.745353454Z
-updatedat: 2026-08-24T19:44:53.556259702Z
-closedat: null
+updatedat: 2026-08-24T19:44:54.736794864Z
+closedat: 2026-08-24T19:44:54.736794192Z
