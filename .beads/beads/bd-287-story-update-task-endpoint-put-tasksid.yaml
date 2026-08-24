@@ -7,10 +7,10 @@ id: bd-287
 type: story
 title: 'Story: Update Task Endpoint (PUT /tasks/{id})'
 description: As a developer, I can update a task (including marking it as completed) via PUT /tasks/{id} so that I can modify existing tasks.
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-be10be1f
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -22,5 +22,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T17:39:56.066697903Z
-updatedat: 2026-08-24T17:56:03.026364195Z
-closedat: null
+updatedat: 2026-08-24T17:56:06.055517374Z
+closedat: 2026-08-24T17:56:06.055514965Z
