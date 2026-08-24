@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
+	"time"
 
 	"loom-bootstrap-test-5/models"
 	"loom-bootstrap-test-5/store"
@@ -155,5 +156,5 @@ func (h *TaskHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *TaskHandler) HealthCheck(w http.ResponseWriter, r *http.Request) {
-	writeJSON(w, http.StatusOK, map[string]string{"status": "healthy"})
+	writeJSON(w, http.StatusOK, map[string]string{"status": "healthy", "timestamp": time.Now().UTC().Format(time.RFC3339)})
 }

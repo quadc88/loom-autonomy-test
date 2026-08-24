@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"loom-bootstrap-test-5/models"
-	"github.com/google/uuid"
 )
 
 type TaskStore interface {
@@ -41,7 +40,7 @@ func (s *InMemoryStore) Create(task *models.Task) error {
 		return err
 	}
 
-	task.ID = uuid.New().String()
+	task.ID = fmt.Sprintf("%d", s.nextID)
 	ts := time.Now().UTC()
 	task.CreatedAt = ts
 	task.UpdatedAt = ts
