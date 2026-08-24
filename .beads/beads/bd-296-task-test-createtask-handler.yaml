@@ -7,10 +7,10 @@ id: bd-296
 type: task
 title: 'Task: Test CreateTask Handler'
 description: Write unit and integration tests for the CreateTask handler including validation cases.
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-b69e6624
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T18:47:39.558065437Z
-updatedat: 2026-08-24T22:45:29.391891241Z
-closedat: null
+updatedat: 2026-08-24T22:45:30.043071091Z
+closedat: 2026-08-24T22:45:30.043070494Z
