@@ -1,0 +1,26 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-292
+type: story
+title: 'Story: Delete Task Endpoint (DELETE /tasks/{id})'
+description: As a developer, I can delete a task via DELETE /tasks/{id} so that I can remove tasks from the system.
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-1267cef5
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T18:46:58.77043667Z
+updatedat: 2026-08-24T18:55:40.889309074Z
+closedat: null
