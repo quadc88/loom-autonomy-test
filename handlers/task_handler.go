@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -218,7 +217,8 @@ func (h *TaskHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *TaskHandler) HealthCheck(w http.ResponseWriter, r *http.Request) {
-	stats := h.store.HealthCheck()
-	stats["timestamp"] = time.Now().UTC().Format(time.RFC3339)
-	writeJSON(w, http.StatusOK, stats)
+	writeJSON(w, http.StatusOK, map[string]string{
+		"status":    "healthy",
+		"timestamp": time.Now().UTC().Format(time.RFC3339),
+	})
 }
