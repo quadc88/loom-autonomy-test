@@ -1,0 +1,124 @@
+package tests
+
+import (
+	"bytes"
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
+	"loom-bootstrap-test-5/handlers"
+	"loom-bootstrap-test-5/models"
+	"loom-bootstrap-test-5/store"
+)
+
+func newTestServer(t *testing.T) (*handlers.TaskHandler, *httptest.Server) {
+	s := store.NewInMemoryStore()
+	h := handlers.NewTaskHandler(s)
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/tasks", h.HandleTasks)
+	mux.HandleFunc("/tasks/", h.HandleTasks)
+	mux.HandleFunc("/health", h.HealthCheck)
+
+	server := httptest.NewServer(mux)
+	return h, server
+}
+
+func TestCreateTask(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+
+	reqBody, _ := json.Marshal(map[string]string{"title": "Test Task"})
+	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusCreated {
+		t.Fatalf("expected 201, got %d", resp.StatusCode)
+	}
+
+	var task models.Task
+	json.NewDecoder(resp.Body).Decode(&task)
+	if task.Title != "Test Task" {
+		t.Errorf("expected title 'Test Task', got %s", task.Title)
+	}
+	if task.ID == "" {
+		t.Error("expected non-empty ID")
+	}
+}
+
+func TestListTasks(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+
+	req, _ := http.NewRequest("GET", server.URL+"/tasks", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+
+	var tasks []models.Task
+	json.NewDecoder(resp.Body).Decode(&tasks)
+	if len(tasks) != 0 {
+		t.Errorf("expected 0 tasks, got %d", len(tasks))
+	}
+}
+
+func TestHealthCheck(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+
+	req, _ := http.NewRequest("GET", server.URL+"/health", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+}
+
+func TestGetTask_NotFound(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+
+	req, _ := http.NewRequest("GET", server.URL+"/tasks/999", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusNotFound {
+		t.Fatalf("expected 404, got %d", resp.StatusCode)
+	}
+}
+
+func TestDeleteTask_NotFound(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+
+	req, _ := http.NewRequest("DELETE", server.URL+"/tasks/999", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusNotFound {
+		t.Fatalf("expected 404, got %d", resp.StatusCode)
+	}
+}
