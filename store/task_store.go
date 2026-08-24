@@ -8,6 +8,7 @@ import (
 	"loom-bootstrap-test-5/models"
 )
 
+// TaskStore defines the interface for task persistence.
 type TaskStore interface {
 	Create(task *models.Task) error
 	List(filter *models.TaskFilter) ([]*models.Task, error)
@@ -18,21 +19,22 @@ type TaskStore interface {
 	HealthCheck() map[string]string
 }
 
+// InMemoryStore implements TaskStore using an in-memory map.
 type InMemoryStore struct {
-	mu     sync.RWMutex
-	tasks  map[string]*models.Task
-	order  []string
-	nextID uint64
+	mu    sync.RWMutex
+	tasks map[string]*models.Task
+	order []string
 }
 
+// NewInMemoryStore creates a new in-memory task store.
 func NewInMemoryStore() *InMemoryStore {
 	return &InMemoryStore{
-		tasks:  make(map[string]*models.Task),
-		order:  make([]string, 0),
-		nextID: 1,
+		tasks: make(map[string]*models.Task),
+		order: make([]string, 0),
 	}
 }
 
+// Create adds a new task to the store.
 func (s *InMemoryStore) Create(task *models.Task) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -41,17 +43,12 @@ func (s *InMemoryStore) Create(task *models.Task) error {
 		return err
 	}
 
-	task.ID = fmt.Sprintf("%d", s.nextID)
-	ts := time.Now().UTC()
-	task.CreatedAt = ts
-	task.UpdatedAt = ts
-
 	s.tasks[task.ID] = task
 	s.order = append(s.order, task.ID)
-	s.nextID++
 	return nil
 }
 
+// List returns tasks optionally filtered by status and limited.
 func (s *InMemoryStore) List(filter *models.TaskFilter) ([]*models.Task, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -78,6 +75,7 @@ func (s *InMemoryStore) List(filter *models.TaskFilter) ([]*models.Task, error) 
 	return result, nil
 }
 
+// Get returns a task by ID.
 func (s *InMemoryStore) Get(id string) (*models.Task, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -89,6 +87,7 @@ func (s *InMemoryStore) Get(id string) (*models.Task, error) {
 	return t, nil
 }
 
+// Update partially updates a task.
 func (s *InMemoryStore) Update(id string, updates *models.TaskUpdate) (*models.Task, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -105,6 +104,7 @@ func (s *InMemoryStore) Update(id string, updates *models.TaskUpdate) (*models.T
 	return t, nil
 }
 
+// Replace replaces a task entirely.
 func (s *InMemoryStore) Replace(id string, task *models.Task) (*models.Task, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -112,6 +112,10 @@ func (s *InMemoryStore) Replace(id string, task *models.Task) (*models.Task, err
 	_, ok := s.tasks[id]
 	if !ok {
 		return nil, fmt.Errorf("task not found")
+	}
+
+	if err := task.ValidateReplace(); err != nil {
+		return nil, err
 	}
 
 	task.ID = id
@@ -122,6 +126,7 @@ func (s *InMemoryStore) Replace(id string, task *models.Task) (*models.Task, err
 	return task, nil
 }
 
+// Delete removes a task by ID.
 func (s *InMemoryStore) Delete(id string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -139,6 +144,7 @@ func (s *InMemoryStore) Delete(id string) error {
 	return nil
 }
 
+// HealthCheck returns service health information.
 func (s *InMemoryStore) HealthCheck() map[string]string {
 	s.mu.RLock()
 	count := len(s.tasks)
