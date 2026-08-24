@@ -1,0 +1,26 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-313
+type: task
+title: 'Task: Implement Middleware (CORS, Recovery, Logging)'
+description: Implement middleware functions for CORS headers, panic recovery (using recover()), and request logging. These should wrap handlers and run per-request.
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-488b69c6
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T19:08:18.509901285Z
+updatedat: 2026-08-24T19:09:49.996506235Z
+closedat: null
