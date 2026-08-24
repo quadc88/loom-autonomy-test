@@ -1,0 +1,35 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-279
+type: task
+title: '[Bootstrap] Decompose SRD into Epics, Stories, and Tasks'
+description: |-
+    Review plans/SRD.md and decompose the System Requirements Document into a hierarchical bead structure:
+
+    1. **Epics** — Major work streams (e.g., Core API Implementation, Testing, Infrastructure/Deployment, Documentation)
+    2. **Stories** — User-facing or technical stories under each epic (e.g., 'As a developer, I can create a task via POST /tasks')
+    3. **Tasks** — Atomic implementation tasks under each story (e.g., 'Implement Task model', 'Write CreateTask handler', 'Add unit tests for store')
+
+    Assign all beads to the `technical-project-manager` agent. Ensure dependencies are captured where relevant (e.g., models before handlers, handlers before integration tests). Use appropriate priorities (P0/P1/P2) based on the SRD's must-have vs out-of-scope items.
+
+    Deliverable: Full bead hierarchy that enables parallel work while respecting implementation order.
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-022dbea2
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T17:36:10.091728501Z
+updatedat: 2026-08-24T17:38:11.955217236Z
+closedat: null
