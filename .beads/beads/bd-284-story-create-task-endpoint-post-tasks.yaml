@@ -7,10 +7,10 @@ id: bd-284
 type: story
 title: 'Story: Create Task Endpoint (POST /tasks)'
 description: As a developer, I can create a task via POST /tasks so that I can add new tasks to the system.
-status: in_progress
+status: open
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-1267cef5
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T17:39:17.112797389Z
-updatedat: 2026-08-24T22:49:38.601270493Z
+updatedat: 2026-08-24T22:49:40.110075094Z
 closedat: null
