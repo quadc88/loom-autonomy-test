@@ -7,10 +7,10 @@ id: bd-289
 type: story
 title: 'Story: Health Check Endpoint (GET /health)'
 description: As a developer, I can check the health of the API via GET /health so that I can monitor the service status.
-status: open
+status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-be10be1f
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T17:40:34.075631824Z
-updatedat: 2026-08-24T19:20:38.938643156Z
+updatedat: 2026-08-24T19:39:51.444125063Z
 closedat: null
