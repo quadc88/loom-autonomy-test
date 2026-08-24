@@ -7,20 +7,25 @@ id: bd-296
 type: task
 title: 'Task: Test CreateTask Handler'
 description: Write unit and integration tests for the CreateTask handler including validation cases.
-status: in_progress
+status: open
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-b69e6624
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
 parent: ""
 children: []
 tags: []
-context: {}
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-08-24T19:17:41.24268633Z","error":"LLM call failed on iteration 2: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260824191741201064640Tp7h5fM6)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-08-24T19:17:41Z"
+    last_run_error: 'LLM call failed on iteration 2: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260824191741201064640Tp7h5fM6)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T18:47:39.558065437Z
-updatedat: 2026-08-24T19:17:40.880856429Z
+updatedat: 2026-08-24T19:17:41.242707578Z
 closedat: null
