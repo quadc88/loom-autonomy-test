@@ -7,10 +7,10 @@ id: bd-285
 type: story
 title: 'Story: List Tasks Endpoint (GET /tasks)'
 description: As a developer, I can list all tasks via GET /tasks so that I can view all tasks in the system.
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-1267cef5
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T17:39:20.296394045Z
-updatedat: 2026-08-24T20:49:27.883399819Z
-closedat: null
+updatedat: 2026-08-24T20:49:28.228267394Z
+closedat: 2026-08-24T20:49:28.228266669Z
