@@ -1,0 +1,26 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-296
+type: task
+title: 'Task: Test CreateTask Handler'
+description: Write unit and integration tests for the CreateTask handler including validation cases.
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-b69e6624
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T18:47:39.558065437Z
+updatedat: 2026-08-24T19:17:40.880856429Z
+closedat: null
