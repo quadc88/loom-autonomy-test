@@ -1,0 +1,26 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-312
+type: task
+title: 'Task: Implement Health Check Handler'
+description: 'Implement the health check handler that returns 200 with {"status": "healthy", "timestamp": "..."} on GET /health.'
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-1267cef5
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T19:08:15.515391665Z
+updatedat: 2026-08-24T19:10:00.889172916Z
+closedat: null
