@@ -7,10 +7,10 @@ id: bd-322
 type: task
 title: 'Task: Implement DeleteTask Handler'
 description: Implement the DeleteTask HTTP handler that looks up the task by ID, deletes it from the store, and returns 204 No Content or 404 if not found.
-status: open
+status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-be10be1f
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T21:00:33.624475833Z
-updatedat: 2026-08-24T21:05:36.655090492Z
+updatedat: 2026-08-24T21:19:48.103884015Z
 closedat: null
