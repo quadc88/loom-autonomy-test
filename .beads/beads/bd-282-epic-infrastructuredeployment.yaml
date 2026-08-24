@@ -7,10 +7,10 @@ id: bd-282
 type: epic
 title: 'Epic: Infrastructure/Deployment'
 description: Create multi-stage Dockerfile and ensure project is runnable in Docker with proper environment configuration.
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-b69e6624
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T17:39:10.203002296Z
-updatedat: 2026-08-24T18:28:01.889300012Z
-closedat: null
+updatedat: 2026-08-24T18:28:03.406921841Z
+closedat: 2026-08-24T18:28:03.406921115Z
