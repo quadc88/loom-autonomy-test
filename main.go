@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"loom-bootstrap-test-5/handlers"
+	"loom-bootstrap-test-5/middleware"
 	"loom-bootstrap-test-5/store"
 )
 
@@ -23,6 +24,13 @@ func main() {
 	mux.HandleFunc("/tasks/", h.HandleTasks)
 	mux.HandleFunc("/health", h.HealthCheck)
 
+	// Apply middleware chain: Recovery -> Logging -> CORS -> Handler
+	handler := middleware.Chain(mux,
+		middleware.Recovery,
+		middleware.Logging,
+		middleware.CORS(middleware.DefaultCORSOptions()),
+	)
+
 	log.Printf("Server starting on port %s", port)
-	log.Fatal(http.ListenAndServe(":"+port, mux))
+	log.Fatal(http.ListenAndServe(":"+port, handler))
 }
