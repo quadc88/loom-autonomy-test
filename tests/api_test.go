@@ -131,6 +131,27 @@ func TestUpdateTask(t *testing.T) {
 	if !task.Completed { t.Error("expected task to be completed") }
 }
 
+func TestGetTask_Success(t *testing.T) {
+	h, server := newTestServer(t)
+	defer server.Close()
+	reqBody, _ := json.Marshal(map[string]string{"title": "Get Task Test"})
+	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
+	req.Header.Set("Content-Type", "application/json")
+	h.HandleTasks(nil, req)
+
+	req, _ = http.NewRequest("GET", server.URL+"/tasks/1", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil { t.Fatalf("unexpected error: %v", err) }
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+	var task models.Task
+	json.NewDecoder(resp.Body).Decode(&task)
+	if task.Title != "Get Task Test" { t.Errorf("expected title 'Get Task Test', got %s", task.Title) }
+	if task.ID == "" { t.Error("expected non-empty ID") }
+}
+
 func TestDeleteTask(t *testing.T) {
 	h, server := newTestServer(t)
 	defer server.Close()
