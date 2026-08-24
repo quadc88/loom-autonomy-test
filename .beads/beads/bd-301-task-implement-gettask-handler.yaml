@@ -1,0 +1,26 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-301
+type: task
+title: 'Task: Implement GetTask Handler'
+description: Write the GetTask HTTP handler that retrieves a single task by ID.
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-b69e6624
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-08-24T18:48:51.652361351Z
+updatedat: 2026-08-24T18:59:20.107871308Z
+closedat: null
