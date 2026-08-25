@@ -7,10 +7,10 @@ id: bd-304
 type: task
 title: Fix git push auth for loom-bootstrap-test-5
 description: 'The get-task-handler branch has the TestGetTask_Success test added and committed locally. Git push to https://github.com/quadc88/loom-autonomy-test.git is failing due to SSH key mismatch (key belongs to loom-bootstrap-test-2) and empty credentials. Needs: (1) regenerate SSH key or configure token for this repo, (2) push feature/get-task-handler-test branch, (3) create PR to main.'
-status: open
+status: in_progress
 priority: 1
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-be10be1f
 blockedby: []
 blocks: []
 relatedto: []
@@ -31,5 +31,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-08-24T19:05:16.587430938Z
-updatedat: 2026-08-25T00:00:36.654279227Z
+updatedat: 2026-08-25T00:05:32.454817724Z
 closedat: null
