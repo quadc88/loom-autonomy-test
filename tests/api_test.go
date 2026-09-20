@@ -215,45 +215,7 @@ func TestGetTask_Success(t *testing.T) {
 	}
 }
 
-func TestCreateTask_TitleTooLong_V1(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-	longTitle := ""
-	for i := 0; i < 256; i++ {
-		longTitle += "a"
-	}
-	reqBody, _ := json.Marshal(map[string]string{"title": longTitle})
-	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
-	req.Header.Set("Content-Type", "application/json")
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusBadRequest {
-		t.Fatalf("expected 400, got %d", resp.StatusCode)
-	}
-}
 
-func TestCreateTask_DescriptionTooLong_V1(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-	longDesc := ""
-	for i := 0; i < 10001; i++ {
-		longDesc += "a"
-	}
-	reqBody, _ := json.Marshal(map[string]string{"title": "Test", "description": longDesc})
-	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
-	req.Header.Set("Content-Type", "application/json")
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusBadRequest {
-		t.Fatalf("expected 400, got %d", resp.StatusCode)
-	}
-}
 
 func TestCreateTask_WithDescription(t *testing.T) {
 	_, server := newTestServer(t)

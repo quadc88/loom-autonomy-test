@@ -73,29 +73,18 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
-	var input struct {
-		Title       string `json:"title"`
-		Description string `json:"description,omitempty"`
-	}
+	var input models.CreateTaskRequest
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		writeError(w, http.StatusBadRequest, "invalid request body")
 		return
 	}
 
-	if strings.TrimSpace(input.Title) == "" {
-		writeError(w, http.StatusBadRequest, "title is required")
-		return
-	}
-	if len(input.Title) > 255 {
-		writeError(w, http.StatusBadRequest, "title must be 255 characters or less")
-		return
-	}
-	if len(input.Description) > 10000 {
-		writeError(w, http.StatusBadRequest, "description must be 10000 characters or less")
+	task := models.NewTask(strings.TrimSpace(input.Title), input.Description)
+	if err := task.ValidateCreate(); err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	task := models.NewTask(input.Title, input.Description)
 	if err := h.store.Create(task); err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
