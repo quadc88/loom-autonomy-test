@@ -215,7 +215,7 @@ func TestGetTask_Success(t *testing.T) {
 	}
 }
 
-func TestCreateTask_TitleTooLong(t *testing.T) {
+func TestCreateTask_TitleTooLong_V1(t *testing.T) {
 	_, server := newTestServer(t)
 	defer server.Close()
 	longTitle := ""
@@ -235,7 +235,7 @@ func TestCreateTask_TitleTooLong(t *testing.T) {
 	}
 }
 
-func TestCreateTask_DescriptionTooLong(t *testing.T) {
+func TestCreateTask_DescriptionTooLong_V1(t *testing.T) {
 	_, server := newTestServer(t)
 	defer server.Close()
 	longDesc := ""
