@@ -1,0 +1,43 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1864
+type: task
+title: 'Story 1.2: Implement task creation endpoint (POST /tasks)'
+description: |-
+    Create the POST /tasks handler for task creation.
+
+    Technical Tasks:
+    1.2.1 Create handlers/task_handler.go with createTask handler
+    1.2.2 Validate title (required, non-empty, max 255 chars) and description (max 10000 chars)
+    1.2.3 Return 201 Created with task JSON on success, 400 Bad Request on validation error
+
+    Acceptance Criteria:
+    - Valid request returns 201 with task JSON including auto-generated fields
+    - Missing title returns 400 with error message
+    - Title > 255 chars returns 400
+    - Description > 10000 chars returns 400
+status: open
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-09-20T21:21:58.966439581Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920212158961631664PVnTjU5s)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-09-20T21:21:58Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920212158961631664PVnTjU5s)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T21:17:17.296467462Z
+updatedat: 2026-09-20T21:21:58.966451071Z
+closedat: null
