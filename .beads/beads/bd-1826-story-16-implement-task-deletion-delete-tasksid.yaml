@@ -17,10 +17,10 @@ description: |-
     - Valid task ID returns 204 No Content
     - Non-existent task ID returns 404 with error message
     - Empty/malformed ID returns 404
-status: open
+status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-28919132
 blockedby: []
 blocks: []
 relatedto: []
@@ -41,5 +41,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T12:04:01.871122458Z
-updatedat: 2026-09-20T13:26:28.793893824Z
+updatedat: 2026-09-20T13:28:06.179007061Z
 closedat: null
