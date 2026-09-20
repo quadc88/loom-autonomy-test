@@ -22,10 +22,10 @@ description: |-
     - Status codes verified
     - Response bodies validated
     - Error messages checked
-status: in_progress
+status: closed
 priority: 1
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-5f94ff5b
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -46,5 +46,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T10:53:17.243113957Z
-updatedat: 2026-09-20T15:26:09.945944299Z
-closedat: null
+updatedat: 2026-09-20T15:26:10.243989511Z
+closedat: 2026-09-20T15:26:10.243988289Z
