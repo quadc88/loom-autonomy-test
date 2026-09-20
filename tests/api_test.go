@@ -106,6 +106,34 @@ func TestHealthCheck(t *testing.T) {
 	if result["timestamp"] == "" {
 		t.Error("expected non-empty timestamp")
 	}
+	if result["tasks"] != "0" {
+		t.Errorf("expected tasks '0', got %s", result["tasks"])
+	}
+	if result["service"] != "task-api" {
+		t.Errorf("expected service 'task-api', got %s", result["service"])
+	}
+}
+
+func TestHealthCheck_WithTasks(t *testing.T) {
+	h, server := newTestServer(t)
+	defer server.Close()
+	// Create a task
+	createTask(t, server, "Health Check Test")
+	// Verify health endpoint reflects the task count
+	req, _ := http.NewRequest("GET", server.URL+"/health", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	var result map[string]string
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		t.Fatalf("failed to decode JSON: %v", err)
+	}
+	if result["tasks"] != "1" {
+		t.Errorf("expected tasks '1', got %s", result["tasks"])
+	}
+	_ = h
 }
 
 func TestGetTask_NotFound(t *testing.T) {
