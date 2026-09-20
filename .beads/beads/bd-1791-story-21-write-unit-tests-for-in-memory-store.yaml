@@ -1,0 +1,40 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1791
+type: task
+title: 'Story 2.1: Write unit tests for in-memory store'
+description: |-
+    Write comprehensive unit tests for the in-memory task store.
+
+    Technical Tasks:
+    2.1.1 Test Create with valid and invalid data
+    2.1.2 Test List with and without filters
+    2.1.3 Test Get for existing and non-existing tasks
+    2.1.4 Test Update for existing and non-existing tasks
+    2.1.5 Test Delete for existing and non-existing tasks
+    2.1.6 Test concurrent access safety
+
+    Acceptance Criteria:
+    - All store operations have unit tests
+    - Concurrency safety verified with concurrent operations
+    - Edge cases covered (empty store, invalid input)
+status: in_progress
+priority: 1
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-245451bb
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T06:23:53.827719795Z
+updatedat: 2026-09-20T06:27:50.44804614Z
+closedat: null
