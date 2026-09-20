@@ -10,17 +10,17 @@ import (
 // Task represents a task in the system.
 type Task struct {
 	ID          string    `json:"id"`
-	Title       string    `json:"title" validate:"required,max=255"`
-	Description string    `json:"description,omitempty" validate:"max=10000"`
+	Title       string    `json:"title"`
+	Description string    `json:"description,omitempty"`
 	Completed   bool      `json:"completed"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }
 
-// TaskFilter represents filtering options for listing tasks.
-type TaskFilter struct {
-	Status *string
-	Limit  int
+// CreateTaskRequest is the payload for creating a new task.
+type CreateTaskRequest struct {
+	Title       string `json:"title"`
+	Description string `json:"description,omitempty"`
 }
 
 // TaskUpdate represents partial updates for a task.
@@ -28,7 +28,13 @@ type TaskUpdate struct {
 	Completed *bool
 }
 
-// ErrorResponse represents an error response from the API.
+// TaskFilter allows filtering the list of tasks.
+type TaskFilter struct {
+	Status *string
+	Limit  int
+}
+
+// ErrorResponse is the standard error response format.
 type ErrorResponse struct {
 	Error string `json:"error"`
 }
@@ -57,11 +63,6 @@ func (t *Task) ValidateCreate() error {
 	if len(t.Description) > 10000 {
 		return fmt.Errorf("description must be 10000 characters or less")
 	}
-	return nil
-}
-
-// ValidateUpdate validates a task update.
-func (u *TaskUpdate) Validate() error {
 	return nil
 }
 
