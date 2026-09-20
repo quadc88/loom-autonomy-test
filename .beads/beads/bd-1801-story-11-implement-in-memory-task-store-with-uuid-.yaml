@@ -19,10 +19,10 @@ description: |-
     - All store methods (Create, List, Get, Update, Delete) are thread-safe
     - UUID generation produces valid v4 UUIDs
     - ISO 8601 UTC timestamps
-status: open
+status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-245451bb
 blockedby: []
 blocks: []
 relatedto: []
@@ -43,5 +43,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T06:56:25.975900716Z
-updatedat: 2026-09-20T08:01:29.078007102Z
+updatedat: 2026-09-20T08:05:25.901938138Z
 closedat: null
