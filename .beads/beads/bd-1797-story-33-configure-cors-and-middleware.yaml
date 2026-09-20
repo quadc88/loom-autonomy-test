@@ -18,10 +18,10 @@ description: |-
     - CORS headers present in responses
     - Panics are recovered and return 500
     - Requests are logged with method, path, status, duration
-status: open
+status: in_progress
 priority: 2
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-2113379d
 blockedby: []
 blocks: []
 relatedto: []
@@ -38,5 +38,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T06:55:49.871860455Z
-updatedat: 2026-09-20T07:14:43.134827866Z
+updatedat: 2026-09-20T07:14:48.158473983Z
 closedat: null
