@@ -1,0 +1,48 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1839
+type: epic
+title: 'Epic 1: Core API Implementation'
+description: |-
+    Implement all core API endpoints for the Task REST API following the SRD requirements.
+
+    Sub-stories:
+    1. Implement in-memory task store with UUID generation and concurrency safety (Story 1.1)
+    2. Implement POST /tasks - Create Task endpoint (Story 1.2)
+    3. Implement GET /tasks - List Tasks endpoint (Story 1.3)
+    4. Implement GET /tasks/{id} - Get Task by ID endpoint (Story 1.4)
+    5. Implement PATCH /tasks/{id} - Update Task (mark completed) (Story 1.5)
+    6. Implement DELETE /tasks/{id} - Delete Task endpoint (Story 1.6)
+    7. Implement GET /health - Health Check endpoint (Story 1.7)
+
+    Acceptance Criteria:
+    - All 6 API endpoints + health check implemented
+    - In-memory store with thread-safe operations
+    - UUID v4 for task IDs
+    - ISO 8601 timestamps
+    - JSON responses with proper HTTP status codes
+status: open
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-09-20T15:44:01.308256799Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 202609201544013058959072v5kTiwQ)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-09-20T15:44:01Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 202609201544013058959072v5kTiwQ)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T15:44:01.141926896Z
+updatedat: 2026-09-20T15:44:01.308274182Z
+closedat: null
