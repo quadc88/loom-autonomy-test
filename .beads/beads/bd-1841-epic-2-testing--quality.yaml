@@ -1,0 +1,39 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1841
+type: epic
+title: 'Epic 2: Testing & Quality'
+description: |-
+    Write comprehensive tests for the Task REST API ensuring minimum 80% code coverage.
+
+    Sub-stories:
+    1. Write unit tests for in-memory store (Create, List, Get, Update, Delete operations)
+    2. Write integration tests for all API endpoints
+    3. Add validation error handling tests
+
+    Acceptance Criteria:
+    - Unit tests for all store operations
+    - Integration tests covering all endpoints
+    - Validation error tests for bad input
+    - 80%+ code coverage
+    - All tests pass with go test ./...
+status: in_progress
+priority: 1
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-d855dcd0
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T15:56:54.045615114Z
+updatedat: 2026-09-20T15:57:36.778170383Z
+closedat: null
