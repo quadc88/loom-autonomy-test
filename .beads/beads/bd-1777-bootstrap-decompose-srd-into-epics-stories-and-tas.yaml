@@ -1,0 +1,60 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1777
+type: task
+title: '[Bootstrap] Decompose SRD into Epics, Stories, and Tasks'
+description: |-
+    Based on the completed System Requirements Document at plans/SRD.md, create a comprehensive bead hierarchy.
+
+    Your task:
+    1. Read plans/SRD.md to understand the technical requirements
+    2. Create a structured bead hierarchy with:
+       - Epic 1: Core API Implementation
+         - Story: Implement in-memory task store with UUID generation and concurrency safety
+         - Story: Implement task creation endpoint (POST /tasks)
+         - Story: Implement task listing endpoint (GET /tasks)
+         - Story: Implement task retrieval by ID (GET /tasks/{id})
+         - Story: Implement task completion update (PATCH /tasks/{id})
+         - Story: Implement task deletion (DELETE /tasks/{id})
+         - Story: Implement health check endpoint (GET /health)
+       - Epic 2: Testing & Quality
+         - Story: Write unit tests for in-memory store
+         - Story: Write integration tests for all API endpoints
+         - Story: Add validation error handling tests
+       - Epic 3: Deployment & Documentation
+         - Story: Create Dockerfile with multi-stage build
+         - Story: Write README with setup, run, test, and API usage instructions
+         - Story: Configure CORS and middleware
+       - Tasks: Break each story into 1-3 technical tasks with acceptance criteria
+
+    Assign each epic/story as a separate bead with:
+    - Priority: P0 for core API, P1 for testing, P2 for deployment docs
+    - Type: task
+    - Assign to: code-reviewer (for review beads) or appropriate IC
+
+    Ensure the hierarchy flows logically from planning to implementation to testing to deployment.
+status: open
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-09-20T06:05:25.675769686Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920060525698319519qj2FGrrQ)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-09-20T06:05:25Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920060525698319519qj2FGrrQ)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T06:05:04.79297926Z
+updatedat: 2026-09-20T06:05:25.675787739Z
+closedat: null
