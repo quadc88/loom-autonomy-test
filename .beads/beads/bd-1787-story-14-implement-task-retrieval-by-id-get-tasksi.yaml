@@ -17,10 +17,10 @@ description: |-
     - Valid ID returns 200 with task JSON
     - Invalid/missing ID returns 404 with error message
     - Non-existent UUID returns 404
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-2113379d
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -41,5 +41,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T06:15:31.599307228Z
-updatedat: 2026-09-20T07:48:14.863422991Z
-closedat: null
+updatedat: 2026-09-20T07:48:15.395748241Z
+closedat: 2026-09-20T07:48:15.395747119Z
