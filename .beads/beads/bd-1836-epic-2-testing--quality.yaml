@@ -31,14 +31,14 @@ parent: ""
 children: []
 tags: []
 context:
-    dispatch_count: "1"
-    error_history: '[{"timestamp":"2026-09-20T14:45:40.89477471Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920144540892783835KfAwJUb6)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    dispatch_count: "2"
+    error_history: '[{"timestamp":"2026-09-20T14:45:40.89477471Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920144540892783835KfAwJUb6)\",\"type\":\"AgnesAI_error\"}}","dispatch":1},{"timestamp":"2026-09-20T14:45:40.945855125Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920144540942063086sHc1zlv3)\",\"type\":\"AgnesAI_error\"}}","dispatch":2}]'
     last_run_at: "2026-09-20T14:45:40Z"
-    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920144540892783835KfAwJUb6)","type":"AgnesAI_error"}}'
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920144540942063086sHc1zlv3)","type":"AgnesAI_error"}}'
     loop_detected: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T14:45:33.093247895Z
-updatedat: 2026-09-20T14:45:40.894794775Z
+updatedat: 2026-09-20T14:45:40.945868642Z
 closedat: null
