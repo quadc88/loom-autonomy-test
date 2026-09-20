@@ -1,0 +1,40 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1789
+type: task
+title: 'Story 3.1: Create Dockerfile with multi-stage build'
+description: |-
+    Create a production-ready Dockerfile with multi-stage build.
+
+    Technical Tasks:
+    3.1.1 Use golang:1.21-alpine as build stage
+    3.1.2 Use alpine:3.19 as runtime stage
+    3.1.3 Set up non-root user for security
+    3.1.4 Expose port 8080
+    3.1.5 Add HEALTHCHECK instruction
+
+    Acceptance Criteria:
+    - Docker image builds successfully
+    - Image size optimized
+    - Runs as non-root user
+    - Health check configured
+status: in_progress
+priority: 2
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-d855dcd0
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T06:16:03.541581531Z
+updatedat: 2026-09-20T06:20:33.878445092Z
+closedat: null
