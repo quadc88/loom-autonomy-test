@@ -1,0 +1,45 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1828
+type: task
+title: 'Story 2.1: Write unit tests for in-memory store'
+description: |-
+    Write comprehensive unit tests for the in-memory task store.
+
+    Technical Tasks:
+    2.1.1 Test Create with valid and invalid data
+    2.1.2 Test List with and without filters
+    2.1.3 Test Get for existing and non-existing tasks
+    2.1.4 Test Update for existing and non-existing tasks
+    2.1.5 Test Delete for existing and non-existing tasks
+    2.1.6 Test concurrent access safety
+
+    Acceptance Criteria:
+    - All store operations have unit tests
+    - Concurrency safety verified with concurrent operations
+    - Edge cases covered (empty store, invalid input)
+status: open
+priority: 1
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-09-20T12:04:37.667902318Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920120437660454719g7itZS4T)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-09-20T12:04:37Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920120437660454719g7itZS4T)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T12:04:10.220825792Z
+updatedat: 2026-09-20T12:04:37.667929388Z
+closedat: null
