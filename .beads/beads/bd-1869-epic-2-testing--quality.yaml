@@ -20,10 +20,10 @@ description: |-
     - Validation error tests for bad input
     - 80%+ code coverage
     - All tests pass with go test ./...
-status: open
+status: in_progress
 priority: 1
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-5f94ff5b
 blockedby: []
 blocks: []
 relatedto: []
@@ -44,5 +44,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T21:17:44.856051904Z
-updatedat: 2026-09-20T22:21:28.660734425Z
+updatedat: 2026-09-20T22:22:58.629955495Z
 closedat: null
