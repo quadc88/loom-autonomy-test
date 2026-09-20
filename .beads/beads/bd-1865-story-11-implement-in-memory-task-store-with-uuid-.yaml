@@ -1,0 +1,38 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1865
+type: task
+title: 'Story 1.1: Implement in-memory task store with UUID generation and concurrency safety'
+description: |-
+    Create the in-memory task store following the TaskStore interface defined in SRD Section 2.3.
+
+    Technical Tasks:
+    1.1.1 Create models/task.go with Task struct, TaskFilter, TaskUpdate types
+    1.1.2 Implement store/task_store.go with sync.RWMutex for thread safety
+    1.1.3 Generate UUID v4 for task IDs using github.com/google/uuid
+
+    Acceptance Criteria:
+    - Task struct has id, title, description, completed, created_at, updated_at fields
+    - All store methods (Create, List, Get, Update, Delete) are thread-safe
+    - UUID generation produces valid v4 UUIDs
+    - ISO 8601 UTC timestamps
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-5f94ff5b
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T21:17:20.005422702Z
+updatedat: 2026-09-20T21:21:41.490263973Z
+closedat: null
