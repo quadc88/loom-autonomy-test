@@ -1,0 +1,38 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1802
+type: task
+title: 'Story 1.2: Implement task creation endpoint (POST /tasks)'
+description: |-
+    Create the POST /tasks handler for task creation.
+
+    Technical Tasks:
+    1.2.1 Create handlers/task_handler.go with createTask handler
+    1.2.2 Validate title (required, non-empty, max 255 chars) and description (max 10000 chars)
+    1.2.3 Return 201 Created with task JSON on success, 400 Bad Request on validation error
+
+    Acceptance Criteria:
+    - Valid request returns 201 with task JSON including auto-generated fields
+    - Missing title returns 400 with error message
+    - Title > 255 chars returns 400
+    - Description > 10000 chars returns 400
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-5f94ff5b
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T06:56:29.831682291Z
+updatedat: 2026-09-20T07:07:35.374480784Z
+closedat: null
