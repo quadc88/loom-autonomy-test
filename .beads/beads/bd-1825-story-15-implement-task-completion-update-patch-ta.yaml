@@ -19,10 +19,10 @@ description: |-
     - Missing/invalid completed field returns 400
     - Non-existent task returns 404
     - updated_at timestamp is refreshed on update
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-d855dcd0
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -43,5 +43,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T12:03:27.588994125Z
-updatedat: 2026-09-20T13:40:25.734266609Z
-closedat: null
+updatedat: 2026-09-20T13:40:27.544407868Z
+closedat: 2026-09-20T13:40:27.544407026Z
