@@ -1,0 +1,44 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1842
+type: epic
+title: 'Epic 3: Deployment & Documentation'
+description: |-
+    Create deployment infrastructure and documentation for the Task REST API.
+
+    Sub-stories:
+    1. Create Dockerfile with multi-stage build (golang:1.21-alpine build, alpine:3.19 runtime)
+    2. Write README with setup, run, test, and API usage instructions
+    3. Configure CORS and middleware (panic recovery, logging)
+
+    Acceptance Criteria:
+    - Docker image builds successfully
+    - Image exposes port 8080
+    - README covers local/Docker setup, all endpoints, and usage examples
+    - CORS middleware configurable via environment variables
+    - Panic recovery middleware in place
+status: open
+priority: 2
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-09-20T15:57:39.971546968Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920155739970558736w1scT7xv)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-09-20T15:57:39Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920155739970558736w1scT7xv)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T15:56:56.661961663Z
+updatedat: 2026-09-20T15:57:39.971560445Z
+closedat: null
