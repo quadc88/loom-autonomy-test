@@ -19,10 +19,10 @@ description: |-
     - Missing title returns 400 with error message
     - Title > 255 chars returns 400
     - Description > 10000 chars returns 400
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-d855dcd0
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -43,5 +43,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T08:52:21.353979297Z
-updatedat: 2026-09-20T09:00:46.523389694Z
-closedat: null
+updatedat: 2026-09-20T09:00:47.594665258Z
+closedat: 2026-09-20T09:00:47.594664307Z
