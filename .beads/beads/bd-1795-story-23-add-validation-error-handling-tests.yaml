@@ -20,10 +20,10 @@ description: |-
     - All validation errors return 400 with descriptive messages
     - Malformed input handled gracefully
     - Consistent error response format
-status: open
+status: in_progress
 priority: 1
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-28919132
 blockedby: []
 blocks: []
 relatedto: []
@@ -44,5 +44,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T06:55:30.957399813Z
-updatedat: 2026-09-20T16:36:28.60999272Z
+updatedat: 2026-09-20T16:36:46.482048191Z
 closedat: null
