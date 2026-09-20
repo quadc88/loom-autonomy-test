@@ -1,0 +1,43 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1798
+type: epic
+title: 'Epic 1: Core API Implementation'
+description: |-
+    Implement all core API endpoints for the Task REST API following the SRD requirements.
+
+    Sub-stories:
+    1. Implement in-memory task store with UUID generation and concurrency safety
+    2. Implement POST /tasks - Create Task endpoint
+    3. Implement GET /tasks - List Tasks endpoint
+    4. Implement GET /tasks/{id} - Get Task by ID endpoint
+    5. Implement PATCH /tasks/{id} - Update Task (mark completed)
+    6. Implement DELETE /tasks/{id} - Delete Task endpoint
+    7. Implement GET /health - Health Check endpoint
+
+    Acceptance Criteria:
+    - All 6 API endpoints + health check implemented
+    - In-memory store with thread-safe operations
+    - UUID v4 for task IDs
+    - ISO 8601 timestamps
+    - JSON responses with proper HTTP status codes
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-2113379d
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-20T06:56:13.315956645Z
+updatedat: 2026-09-20T06:59:00.617108158Z
+closedat: null
