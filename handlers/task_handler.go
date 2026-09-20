@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -42,7 +43,7 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		id := extractID(path)
-		if id != "" {
+		if id != "" && id != "health" {
 			h.GetTask(w, r)
 			return
 		}
@@ -55,14 +56,14 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
 	case http.MethodPatch, http.MethodPut:
 		id := extractID(path)
-		if id != "" {
-			h.HandleUpdate(w, r)
+		if id != "" && id != "health" {
+			h.UpdateTask(w, r)
 			return
 		}
 		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
 	case http.MethodDelete:
 		id := extractID(path)
-		if id != "" {
+		if id != "" && id != "health" {
 			h.DeleteTask(w, r)
 			return
 		}
@@ -111,8 +112,8 @@ func (h *TaskHandler) ListTasks(w http.ResponseWriter, r *http.Request) {
 	}
 	limitStr := r.URL.Query().Get("limit")
 	if limitStr != "" {
-		var limit int
-		if _, err := fmt.Sscanf(limitStr, "%d", &limit); err == nil && limit > 0 {
+		limit, err := strconv.Atoi(limitStr)
+		if err == nil && limit > 0 {
 			filter.Limit = limit
 		}
 	}
@@ -138,15 +139,14 @@ func (h *TaskHandler) GetTask(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, task)
 }
 
-func (h *TaskHandler) HandleUpdate(w http.ResponseWriter, r *http.Request) {
+func (h *TaskHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 	id := extractID(r.URL.Path)
 	if id == "" {
 		writeError(w, http.StatusBadRequest, "task ID is required")
 		return
 	}
 
-	switch r.Method {
-	case http.MethodPatch:
+	if r.Method == http.MethodPatch {
 		var input models.TaskUpdate
 		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 			writeError(w, http.StatusBadRequest, "invalid request body")
@@ -158,7 +158,7 @@ func (h *TaskHandler) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		writeJSON(w, http.StatusOK, task)
-	case http.MethodPut:
+	} else if r.Method == http.MethodPut {
 		var input models.Task
 		if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 			writeError(w, http.StatusBadRequest, "invalid request body")
@@ -174,30 +174,7 @@ func (h *TaskHandler) HandleUpdate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		writeJSON(w, http.StatusOK, task)
-	default:
-		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
 	}
-}
-
-func (h *TaskHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {
-	id := extractID(r.URL.Path)
-	if id == "" {
-		writeError(w, http.StatusBadRequest, "task ID is required")
-		return
-	}
-
-	var input models.TaskUpdate
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid request body")
-		return
-	}
-
-	task, err := h.store.Update(id, &input)
-	if err != nil {
-		writeError(w, http.StatusNotFound, "task not found")
-		return
-	}
-	writeJSON(w, http.StatusOK, task)
 }
 
 func (h *TaskHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
