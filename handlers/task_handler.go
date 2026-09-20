@@ -85,8 +85,13 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		Title:       input.Title,
 		Description: input.Description,
 	}
-	if err := h.store.Create(task); err != nil {
+	if err := task.ValidateCreate(); err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := h.store.Create(task); err != nil {
+		writeError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 	writeJSON(w, http.StatusCreated, task)
