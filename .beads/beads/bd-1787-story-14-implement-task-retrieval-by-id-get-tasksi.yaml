@@ -28,14 +28,14 @@ parent: ""
 children: []
 tags: []
 context:
-    dispatch_count: "1"
-    error_history: '[{"timestamp":"2026-09-20T06:19:24.906989299Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920061924923256376JcOxSt9Y)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
-    last_run_at: "2026-09-20T06:19:24Z"
-    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920061924923256376JcOxSt9Y)","type":"AgnesAI_error"}}'
+    dispatch_count: "2"
+    error_history: '[{"timestamp":"2026-09-20T06:19:24.906989299Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260920061924923256376JcOxSt9Y)\",\"type\":\"AgnesAI_error\"}}","dispatch":1},{"timestamp":"2026-09-20T06:19:51.562662592Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 202609200619515632339462AeSovyG)\",\"type\":\"AgnesAI_error\"}}","dispatch":2}]'
+    last_run_at: "2026-09-20T06:19:51Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 202609200619515632339462AeSovyG)","type":"AgnesAI_error"}}'
     loop_detected: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T06:15:31.599307228Z
-updatedat: 2026-09-20T06:19:24.907008011Z
+updatedat: 2026-09-20T06:19:51.562676494Z
 closedat: null
