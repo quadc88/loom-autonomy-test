@@ -1,0 +1,41 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-1889
+type: task
+title: 'Story 2.2: Write integration tests for all API endpoints'
+description: |-
+    Create comprehensive integration tests for the Task API service using httptest.
+
+    Technical Tasks:
+    2.2.1 Test POST /tasks - create, validate, duplicate handling
+    2.2.2 Test GET /tasks - list all, filter by status
+    2.2.3 Test GET /tasks/{id} - get existing, not found
+    2.2.4 Test PATCH /tasks/{id} - update completion, invalid input, not found
+    2.2.5 Test DELETE /tasks/{id} - delete existing, not found
+    2.2.6 Test GET /health
+
+    Acceptance Criteria:
+    - All endpoints tested with valid and invalid inputs
+    - Status codes verified
+    - Response bodies validated
+    - Error messages checked
+status: in_progress
+priority: 1
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-5f94ff5b
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-09-21T01:04:29.115611292Z
+updatedat: 2026-09-21T01:12:11.247407662Z
+closedat: null
