@@ -5,11 +5,73 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"loom-bootstrap-test-5/handlers"
+	"loom-bootstrap-test-5/models"
 	"loom-bootstrap-test-5/store"
 )
+
+func newTestServer(t *testing.T) (*handlers.TaskHandler, *httptest.Server) {
+	s := store.NewInMemoryStore()
+	h := handlers.NewTaskHandler(s)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/tasks", h.HandleTasks)
+	mux.HandleFunc("/tasks/", h.HandleTasks)
+	mux.HandleFunc("/health", h.HealthCheck)
+	server := httptest.NewServer(mux)
+	return h, server
+}
+
+func createTask(t *testing.T, server *httptest.Server, title string) string {
+	reqBody, _ := json.Marshal(map[string]string{"title": title})
+	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusCreated {
+		t.Fatalf("expected 201, got %d", resp.StatusCode)
+	}
+	var task models.Task
+	json.NewDecoder(resp.Body).Decode(&task)
+	return task.ID
+}
+
+func completeTask(t *testing.T, server *httptest.Server, id string) {
+	updateBody, _ := json.Marshal(map[string]bool{"completed": true})
+	req, _ := http.NewRequest("PATCH", server.URL+"/tasks/"+id, bytes.NewBuffer(updateBody))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+}
+
+func replaceTask(t *testing.T, server *httptest.Server, id string, title string) string {
+	task := models.Task{ID: id, Title: title, Description: "updated", Completed: false}
+	reqBody, _ := json.Marshal(task)
+	req, _ := http.NewRequest("PUT", server.URL+"/tasks/"+id, bytes.NewBuffer(reqBody))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+	var updated models.Task
+	json.NewDecoder(resp.Body).Decode(&updated)
+	return updated.ID
+}
 
 func setupHandler() *handlers.TaskHandler {
 	s := store.NewInMemoryStore()
