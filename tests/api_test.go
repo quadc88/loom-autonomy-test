@@ -177,6 +177,68 @@ func TestListTasks_InvalidStatusFilter(t *testing.T) {
 	_ = h
 }
 
+func TestGetTask_Success(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	id := createTask(t, server, "Get Task Test")
+
+	req, _ := http.NewRequest("GET", server.URL+"/tasks/"+id, nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+	var task models.Task
+	json.NewDecoder(resp.Body).Decode(&task)
+	if task.ID != id {
+		t.Errorf("expected id %s, got %s", id, task.ID)
+	}
+	if task.Title != "Get Task Test" {
+		t.Errorf("expected title 'Get Task Test', got %s", task.Title)
+	}
+	if task.Completed {
+		t.Error("expected completed=false")
+	}
+}
+
+func TestGetTask_NotFound(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+
+	req, _ := http.NewRequest("GET", server.URL+"/tasks/nonexistent-id", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusNotFound {
+		t.Fatalf("expected 404, got %d", resp.StatusCode)
+	}
+	var errMsg models.ErrorResponse
+	json.NewDecoder(resp.Body).Decode(&errMsg)
+	if errMsg.Error == "" {
+		t.Error("expected error message for not found")
+	}
+}
+
+func TestGetTask_EmptyID(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+
+	req, _ := http.NewRequest("GET", server.URL+"/tasks/", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", resp.StatusCode)
+	}
+}
+
 func TestDeleteTask_Success(t *testing.T) {
 	_, server := newTestServer(t)
 	defer server.Close()
