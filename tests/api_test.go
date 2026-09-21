@@ -597,3 +597,47 @@ func TestUpdateTask_InvalidUUID(t *testing.T) {
 		t.Fatalf("expected 404, got %d", resp.StatusCode)
 	}
 }
+
+// Duplicate handling test
+func TestCreateTask_DuplicateTitleAllowed(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	id1 := createTask(t, server, "Same Title")
+	id2 := createTask(t, server, "Same Title")
+	if id1 == id2 {
+		t.Error("expected different IDs for duplicate titles")
+	}
+}
+
+// PATCH invalid input tests
+func TestUpdateTask_PatchInvalidJSON(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	id := createTask(t, server, "Patch Test")
+	req, _ := http.NewRequest("PATCH", server.URL+"/tasks/"+id, bytes.NewBuffer([]byte("{invalid")))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", resp.StatusCode)
+	}
+}
+
+func TestUpdateTask_PatchNotFound(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	updateBody, _ := json.Marshal(map[string]bool{"completed": true})
+	req, _ := http.NewRequest("PATCH", server.URL+"/tasks/nonexistent-id", bytes.NewBuffer(updateBody))
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusNotFound {
+		t.Fatalf("expected 404, got %d", resp.StatusCode)
+	}
+}
