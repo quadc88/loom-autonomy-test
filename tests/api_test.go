@@ -176,3 +176,94 @@ func TestListTasks_InvalidStatusFilter(t *testing.T) {
 	}
 	_ = h
 }
+
+func TestDeleteTask_Success(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	id := createTask(t, server, "Task to delete")
+
+	req, _ := http.NewRequest("DELETE", server.URL+"/tasks/"+id, nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusNoContent {
+		t.Fatalf("expected 204, got %d", resp.StatusCode)
+	}
+}
+
+func TestDeleteTask_NotFound(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+
+	req, _ := http.NewRequest("DELETE", server.URL+"/tasks/nonexistent-id", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusNotFound {
+		t.Fatalf("expected 404, got %d", resp.StatusCode)
+	}
+	var errMsg models.ErrorResponse
+	json.NewDecoder(resp.Body).Decode(&errMsg)
+	if errMsg.Error == "" {
+		t.Error("expected error message for not found")
+	}
+}
+
+func TestDeleteTask_ExistingThenVerifyGone(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+	id := createTask(t, server, "Task to verify deletion")
+
+	// Verify it exists
+	req, _ := http.NewRequest("GET", server.URL+"/tasks/"+id, nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected task to exist, got %d", resp.StatusCode)
+	}
+
+	// Delete it
+	req, _ = http.NewRequest("DELETE", server.URL+"/tasks/"+id, nil)
+	resp, err = http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusNoContent {
+		t.Fatalf("expected 204, got %d", resp.StatusCode)
+	}
+
+	// Verify it's gone
+	req, _ = http.NewRequest("GET", server.URL+"/tasks/"+id, nil)
+	resp, err = http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusNotFound {
+		t.Fatalf("expected 404 after delete, got %d", resp.StatusCode)
+	}
+}
+
+func TestDeleteTask_EmptyID(t *testing.T) {
+	_, server := newTestServer(t)
+	defer server.Close()
+
+	req, _ := http.NewRequest("DELETE", server.URL+"/tasks/", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	// Should return 400 (bad request) since ID is required
+	if resp.StatusCode != http.StatusBadRequest && resp.StatusCode != http.StatusMethodNotAllowed {
+		t.Fatalf("expected 400 or 405, got %d", resp.StatusCode)
+	}
+}
