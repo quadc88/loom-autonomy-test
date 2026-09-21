@@ -22,20 +22,25 @@ description: |-
     - Status codes verified
     - Response bodies validated
     - Error messages checked
-status: in_progress
+status: open
 priority: 1
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-5f94ff5b
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
 parent: ""
 children: []
 tags: []
-context: {}
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-09-21T01:15:50.873217416Z","error":"parse_failures: model failed to produce valid actions after 12 iterations","dispatch":1}]'
+    last_run_at: "2026-09-21T01:15:50Z"
+    last_run_error: 'parse_failures: model failed to produce valid actions after 12 iterations'
+    loop_detected: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-21T01:04:29.115611292Z
-updatedat: 2026-09-21T01:12:34.983926712Z
+updatedat: 2026-09-21T01:15:50.873233208Z
 closedat: null
