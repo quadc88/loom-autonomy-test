@@ -17,7 +17,7 @@ description: |-
     - Valid task ID returns 204 No Content
     - Non-existent task ID returns 404 with error message
     - Empty/malformed ID returns 404
-status: blocked
+status: open
 priority: 0
 projectid: loom-bootstrap-test-5
 assignedto: ""
@@ -32,14 +32,14 @@ context:
     error_history: '[{"timestamp":"2026-09-21T01:08:06.91588282Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260921010806914501693bPtuvOw0)\",\"type\":\"AgnesAI_error\"}}","dispatch":1},{"timestamp":"2026-09-21T01:08:17.470602158Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260921010817464737640j9h2gEcx)\",\"type\":\"AgnesAI_error\"}}","dispatch":2},{"timestamp":"2026-09-21T01:09:13.683807528Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260921010913678780385R5Gi4ORe)\",\"type\":\"AgnesAI_error\"}}","dispatch":3},{"timestamp":"2026-09-21T01:09:13.724462968Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260921010913722244679ZERBjYpu)\",\"type\":\"AgnesAI_error\"}}","dispatch":4},{"timestamp":"2026-09-21T01:09:13.799794058Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 202609210109137994818360imeaMWT)\",\"type\":\"AgnesAI_error\"}}","dispatch":5},{"timestamp":"2026-09-21T01:09:13.799821804Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 202609210109137994818360imeaMWT)\",\"type\":\"AgnesAI_error\"}}","dispatch":5},{"timestamp":"2026-09-21T01:18:02.395034551Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260921011802391719327XFG5W3gU)\",\"type\":\"AgnesAI_error\"}}","dispatch":6},{"timestamp":"2026-09-21T01:18:02.395073209Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260921011802391719327XFG5W3gU)\",\"type\":\"AgnesAI_error\"}}","dispatch":6}]'
     last_run_at: "2026-09-21T01:18:02Z"
     last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20260921011802391719327XFG5W3gU)","type":"AgnesAI_error"}}'
-    loop_detected: "true"
-    loop_detected_at: "2026-09-21T01:18:02Z"
-    loop_detected_reason: Repeated rate limit errors (8 attempts) - exhausted provider quota. Consider increasing the budget or resetting the counter.
-    recovered_at: "2026-09-21T01:11:28Z"
+    loop_detected: "false"
+    loop_detected_at: ""
+    loop_detected_reason: ""
+    recovered_at: "2026-09-21T01:21:28Z"
     recovery_reason: transient infrastructure failure resolved — re-queued by recovery sweep
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-21T01:03:16.947769777Z
-updatedat: 2026-09-21T01:18:02.395122273Z
+updatedat: 2026-09-21T01:21:28.617649942Z
 closedat: null
