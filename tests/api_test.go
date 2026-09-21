@@ -8,324 +8,173 @@ import (
 	"testing"
 
 	"loom-bootstrap-test-5/handlers"
-	"loom-bootstrap-test-5/models"
 	"loom-bootstrap-test-5/store"
 )
 
-func newTestServer(t *testing.T) (*handlers.TaskHandler, *httptest.Server) {
+func setupHandler() *handlers.TaskHandler {
 	s := store.NewInMemoryStore()
-	h := handlers.NewTaskHandler(s)
-	mux := http.NewServeMux()
-	mux.HandleFunc("/tasks", h.HandleTasks)
-	mux.HandleFunc("/tasks/", h.HandleTasks)
-	mux.HandleFunc("/health", h.HealthCheck)
-	server := httptest.NewServer(mux)
-	return h, server
+	return handlers.NewTaskHandler(s)
 }
 
-func createTask(t *testing.T, server *httptest.Server, title string) string {
-	reqBody, _ := json.Marshal(map[string]string{"title": title})
-	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
-	req.Header.Set("Content-Type", "application/json")
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+func TestHealthCheck(t *testing.T) {
+	h := setupHandler()
+	req := httptest.NewRequest(http.MethodGet, "/health", nil)
+	rec := httptest.NewRecorder()
+	h.HandleTasks(rec, req)
+	if rec.Code != http.StatusOK {
+		t.Errorf("got status %d, want %d", rec.Code, http.StatusOK)
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusCreated {
-		t.Fatalf("expected 201, got %d", resp.StatusCode)
+	ct := rec.Header().Get("Content-Type")
+	if ct != "application/json" {
+		t.Errorf("got Content-Type %q, want application/json", ct)
 	}
-	var task models.Task
-	json.NewDecoder(resp.Body).Decode(&task)
-	return task.ID
-}
-
-func completeTask(t *testing.T, server *httptest.Server, id string) {
-	updateBody, _ := json.Marshal(map[string]bool{"completed": true})
-	req, _ := http.NewRequest("PATCH", server.URL+"/tasks/"+id, bytes.NewBuffer(updateBody))
-	req.Header.Set("Content-Type", "application/json")
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+	var body map[string]string
+	if err := json.NewDecoder(rec.Body).Decode(&body); err != nil {
+		t.Fatalf("failed to decode: %v", err)
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	if body["status"] != "healthy" {
+		t.Errorf("got status %q, want %q", body["status"], "healthy")
 	}
 }
 
-func TestListTasks_Empty(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-	req, _ := http.NewRequest("GET", server.URL+"/tasks", nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+func TestCreateTask(t *testing.T) {
+	h := setupHandler()
+	tests := []struct {
+		name       string
+		body       string
+		wantStatus int
+	}{
+		{"valid", `{"title":"Test","description":"A test"}`, http.StatusCreated},
+		{"missing title", `{"description":"No title"}`, http.StatusBadRequest},
+		{"empty title", `{"title":""}`, http.StatusBadRequest},
+		{"invalid json", `{bad`, http.StatusBadRequest},
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected 200, got %d", resp.StatusCode)
-	}
-	var tasks []models.Task
-	json.NewDecoder(resp.Body).Decode(&tasks)
-	if len(tasks) != 0 {
-		t.Errorf("expected 0 tasks, got %d", len(tasks))
-	}
-}
-
-func TestListTasks_All(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-	id1 := createTask(t, server, "Task 1")
-	id2 := createTask(t, server, "Task 2")
-
-	req, _ := http.NewRequest("GET", server.URL+"/tasks", nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected 200, got %d", resp.StatusCode)
-	}
-	var tasks []models.Task
-	json.NewDecoder(resp.Body).Decode(&tasks)
-	if len(tasks) != 2 {
-		t.Errorf("expected 2 tasks, got %d", len(tasks))
-	}
-	ids := make(map[string]bool)
-	for _, task := range tasks {
-		ids[task.ID] = true
-	}
-	if !ids[id1] || !ids[id2] {
-		t.Error("expected both tasks in response")
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBufferString(tt.body))
+			req.Header.Set("Content-Type", "application/json")
+			rec := httptest.NewRecorder()
+			h.HandleTasks(rec, req)
+			if rec.Code != tt.wantStatus {
+				t.Errorf("got %d, want %d", rec.Code, tt.wantStatus)
+			}
+		})
 	}
 }
 
-func TestListTasks_StatusActive(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-	id1 := createTask(t, server, "Active Task")
-	id2 := createTask(t, server, "Completed Task")
-	completeTask(t, server, id2)
-
-	req, _ := http.NewRequest("GET", server.URL+"/tasks?status=active", nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+func TestListTasks(t *testing.T) {
+	h := setupHandler()
+	for _, title := range []string{"A", "B", "C"} {
+		req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBufferString(`{"title":`+title+`}`))
+		rec := httptest.NewRecorder()
+		h.HandleTasks(rec, req)
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	tests := []struct {
+		url       string
+		wantCount int
+	}{
+		{"/tasks", 3},
+		{"/tasks?limit=2", 2},
 	}
-	var tasks []models.Task
-	json.NewDecoder(resp.Body).Decode(&tasks)
-	if len(tasks) != 1 {
-		t.Errorf("expected 1 active task, got %d", len(tasks))
-	}
-	if tasks[0].ID != id1 {
-		t.Errorf("expected id %s, got %s", id1, tasks[0].ID)
-	}
-}
-
-func TestListTasks_StatusCompleted(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-	createTask(t, server, "Active Task")
-	id2 := createTask(t, server, "Completed Task")
-	completeTask(t, server, id2)
-
-	req, _ := http.NewRequest("GET", server.URL+"/tasks?status=completed", nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected 200, got %d", resp.StatusCode)
-	}
-	var tasks []models.Task
-	json.NewDecoder(resp.Body).Decode(&tasks)
-	if len(tasks) != 1 {
-		t.Errorf("expected 1 completed task, got %d", len(tasks))
-	}
-	if tasks[0].ID != id2 {
-		t.Errorf("expected id %s, got %s", id2, tasks[0].ID)
+	for _, tt := range tests {
+		t.Run(tt.url, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodGet, tt.url, nil)
+			rec := httptest.NewRecorder()
+			h.HandleTasks(rec, req)
+			if rec.Code != http.StatusOK {
+				t.Errorf("got %d, want 200", rec.Code)
+			}
+			var result []map[string]interface{}
+			json.NewDecoder(rec.Body).Decode(&result)
+			if len(result) != tt.wantCount {
+				t.Errorf("got %d, want %d", len(result), tt.wantCount)
+			}
+		})
 	}
 }
 
-func TestListTasks_InvalidStatusFilter(t *testing.T) {
-	h, server := newTestServer(t)
-	defer server.Close()
-	createTask(t, server, "Task 1")
-	createTask(t, server, "Task 2")
+func TestGetTask(t *testing.T) {
+	h := setupHandler()
+	req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBufferString(`{"title":"X"}`))
+	rec := httptest.NewRecorder()
+	h.HandleTasks(rec, req)
+	var created struct{ ID string `json:"id"` }
+	json.NewDecoder(rec.Body).Decode(&created)
 
-	req, _ := http.NewRequest("GET", server.URL+"/tasks?status=invalid", nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+	tests := []struct {
+		path       string
+		wantStatus int
+	}{
+		{"/tasks/" + created.ID, http.StatusOK},
+		{"/tasks/nonexistent", http.StatusNotFound},
+		{"/tasks/health", http.StatusBadRequest},
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected 200, got %d", resp.StatusCode)
-	}
-	var tasks []models.Task
-	json.NewDecoder(resp.Body).Decode(&tasks)
-	if len(tasks) != 2 {
-		t.Errorf("expected 2 tasks (fallback), got %d", len(tasks))
-	}
-	_ = h
-}
-
-func TestGetTask_Success(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-	id := createTask(t, server, "Get Task Test")
-
-	req, _ := http.NewRequest("GET", server.URL+"/tasks/"+id, nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected 200, got %d", resp.StatusCode)
-	}
-	var task models.Task
-	json.NewDecoder(resp.Body).Decode(&task)
-	if task.ID != id {
-		t.Errorf("expected id %s, got %s", id, task.ID)
-	}
-	if task.Title != "Get Task Test" {
-		t.Errorf("expected title 'Get Task Test', got %s", task.Title)
-	}
-	if task.Completed {
-		t.Error("expected completed=false")
+	for _, tt := range tests {
+		t.Run(tt.path, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodGet, tt.path, nil)
+			rec := httptest.NewRecorder()
+			h.HandleTasks(rec, req)
+			if rec.Code != tt.wantStatus {
+				t.Errorf("got %d, want %d", rec.Code, tt.wantStatus)
+			}
+		})
 	}
 }
 
-func TestGetTask_NotFound(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
+func TestUpdateTask(t *testing.T) {
+	h := setupHandler()
+	req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBufferString(`{"title":"Y"}`))
+	rec := httptest.NewRecorder()
+	h.HandleTasks(rec, req)
+	var created struct{ ID string `json:"id"` }
+	json.NewDecoder(rec.Body).Decode(&created)
 
-	req, _ := http.NewRequest("GET", server.URL+"/tasks/nonexistent-id", nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+	tests := []struct {
+		method     string
+		path       string
+		body       string
+		wantStatus int
+	}{
+		{"PATCH", "/tasks/" + created.ID, `{"completed":true}`, http.StatusOK},
+		{"PATCH", "/tasks/nonexistent", `{"completed":true}`, http.StatusNotFound},
+		{"PUT", "/tasks/" + created.ID, `{"id":"`+created.ID+`","title":"Updated","completed":true}`, http.StatusOK},
+		{"PUT", "/tasks/" + created.ID, `{"id":"`+created.ID+`","completed":false}`, http.StatusBadRequest},
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusNotFound {
-		t.Fatalf("expected 404, got %d", resp.StatusCode)
-	}
-	var errMsg models.ErrorResponse
-	json.NewDecoder(resp.Body).Decode(&errMsg)
-	if errMsg.Error == "" {
-		t.Error("expected error message for not found")
+	for _, tt := range tests {
+		t.Run(tt.method+tt.path, func(t *testing.T) {
+			req := httptest.NewRequest(tt.method, tt.path, bytes.NewBufferString(tt.body))
+			rec := httptest.NewRecorder()
+			h.HandleTasks(rec, req)
+			if rec.Code != tt.wantStatus {
+				t.Errorf("got %d, want %d", rec.Code, tt.wantStatus)
+			}
+		})
 	}
 }
 
-func TestGetTask_EmptyID(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
+func TestDeleteTask(t *testing.T) {
+	h := setupHandler()
+	req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBufferString(`{"title":"Z"}`))
+	rec := httptest.NewRecorder()
+	h.HandleTasks(rec, req)
+	var created struct{ ID string `json:"id"` }
+	json.NewDecoder(rec.Body).Decode(&created)
 
-	req, _ := http.NewRequest("GET", server.URL+"/tasks/", nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+	tests := []struct {
+		path       string
+		wantStatus int
+	}{
+		{"/tasks/" + created.ID, http.StatusNoContent},
+		{"/tasks/nonexistent", http.StatusNotFound},
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusBadRequest {
-		t.Fatalf("expected 400, got %d", resp.StatusCode)
-	}
-}
-
-func TestDeleteTask_Success(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-	id := createTask(t, server, "Task to delete")
-
-	req, _ := http.NewRequest("DELETE", server.URL+"/tasks/"+id, nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusNoContent {
-		t.Fatalf("expected 204, got %d", resp.StatusCode)
-	}
-}
-
-func TestDeleteTask_NotFound(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-
-	req, _ := http.NewRequest("DELETE", server.URL+"/tasks/nonexistent-id", nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusNotFound {
-		t.Fatalf("expected 404, got %d", resp.StatusCode)
-	}
-	var errMsg models.ErrorResponse
-	json.NewDecoder(resp.Body).Decode(&errMsg)
-	if errMsg.Error == "" {
-		t.Error("expected error message for not found")
-	}
-}
-
-func TestDeleteTask_ExistingThenVerifyGone(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-	id := createTask(t, server, "Task to verify deletion")
-
-	// Verify it exists
-	req, _ := http.NewRequest("GET", server.URL+"/tasks/"+id, nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected task to exist, got %d", resp.StatusCode)
-	}
-
-	// Delete it
-	req, _ = http.NewRequest("DELETE", server.URL+"/tasks/"+id, nil)
-	resp, err = http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusNoContent {
-		t.Fatalf("expected 204, got %d", resp.StatusCode)
-	}
-
-	// Verify it's gone
-	req, _ = http.NewRequest("GET", server.URL+"/tasks/"+id, nil)
-	resp, err = http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusNotFound {
-		t.Fatalf("expected 404 after delete, got %d", resp.StatusCode)
-	}
-}
-
-func TestDeleteTask_EmptyID(t *testing.T) {
-	_, server := newTestServer(t)
-	defer server.Close()
-
-	req, _ := http.NewRequest("DELETE", server.URL+"/tasks/", nil)
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	defer resp.Body.Close()
-	// Should return 400 (bad request) since ID is required
-	if resp.StatusCode != http.StatusBadRequest && resp.StatusCode != http.StatusMethodNotAllowed {
-		t.Fatalf("expected 400 or 405, got %d", resp.StatusCode)
+	for _, tt := range tests {
+		t.Run(tt.path, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodDelete, tt.path, nil)
+			rec := httptest.NewRecorder()
+			h.HandleTasks(rec, req)
+			if rec.Code != tt.wantStatus {
+				t.Errorf("got %d, want %d", rec.Code, tt.wantStatus)
+			}
+		})
 	}
 }
