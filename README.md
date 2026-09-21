@@ -2,12 +2,26 @@
 
 A minimal production-quality Task REST API built with Go. Supports creating, listing, retrieving, updating, and deleting tasks with an in-memory store.
 
+## Features
+
+- ✅ Create tasks with title and optional description
+- ✅ List tasks with optional status filter (active/completed)
+- ✅ Get task by ID
+- ✅ Update task (mark as completed)
+- ✅ Delete task
+- ✅ Health check endpoint
+- ✅ Thread-safe in-memory store with UUID v4 IDs
+- ✅ JSON responses with proper HTTP status codes
+- ✅ CORS support
+- ✅ Recovery and logging middleware
+- ✅ Docker support
+
 ## API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/health` | Health check endpoint |
-| GET | `/tasks` | List all tasks (optional: `?status=completed|pending`) |
+| GET | `/tasks` | List all tasks (optional: `?status=active|completed&limit=N`) |
 | POST | `/tasks` | Create a new task |
 | GET | `/tasks/{id}` | Get a task by ID |
 | PATCH | `/tasks/{id}` | Update a task (mark as completed) |
@@ -42,6 +56,7 @@ Content-Type: application/json
 ```bash
 GET /tasks
 GET /tasks?status=completed
+GET /tasks?status=active&limit=10
 ```
 
 **Update a task:**
@@ -75,7 +90,13 @@ PORT=3000 go run .
 ### Run Tests
 
 ```bash
-go test ./tests/...
+go test ./...
+```
+
+### Run Tests with Verbose Output
+
+```bash
+go test ./... -v
 ```
 
 ### Build Binary
@@ -104,6 +125,12 @@ With custom port:
 docker run -p 8080:8080 -e PORT=3000 task-api
 ```
 
+### Docker Health Check
+
+```bash
+docker inspect --format='{{.State.Health.Status}}' <container_id>
+```
+
 ## API Usage
 
 ### Health Check
@@ -115,12 +142,14 @@ curl http://localhost:8080/health
 ```bash
 curl -X POST http://localhost:8080/tasks \
   -H "Content-Type: application/json" \
-  -d '{"title": "Task title"}'
+  -d '{"title": "Task title", "description": "Optional description"}'
 ```
 
 ### List Tasks
 ```bash
 curl http://localhost:8080/tasks
+curl http://localhost:8080/tasks?status=active
+curl http://localhost:8080/tasks?status=completed&limit=10
 ```
 
 ### Get Task by ID
@@ -146,6 +175,7 @@ curl -X DELETE http://localhost:8080/tasks/{id}
 .
 ├── main.go              # Application entry point
 ├── go.mod               # Go module definition
+├── go.sum               # Go dependencies checksum
 ├── Dockerfile           # Multi-stage Docker build
 ├── README.md            # This file
 ├── handlers/
@@ -153,7 +183,10 @@ curl -X DELETE http://localhost:8080/tasks/{id}
 ├── models/
 │   └── task.go          # Task data model and validation
 ├── store/
-│   └── task_store.go    # In-memory task store
+│   ├── task_store.go    # In-memory task store
+│   └── task_store_test.go # Store unit tests
+├── middleware/
+│   └── middleware.go    # CORS, logging, recovery middleware
 └── tests/
     └── api_test.go      # Integration tests
 ```
@@ -179,3 +212,7 @@ Common status codes:
 - `404 Not Found` - Task not found
 - `405 Method Not Allowed` - Invalid HTTP method for endpoint
 - `500 Internal Server Error` - Server-side error
+
+## License
+
+MIT

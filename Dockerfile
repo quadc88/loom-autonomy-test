@@ -24,13 +24,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o task-api .
 # Run tests
 RUN CGO_ENABLED=0 GOOS=linux go test ./...
 
-# Run tests during build (optional, uncomment if needed)
-# RUN go test ./...
-
-# Runtime stage
+# Run stage
 FROM alpine:3.19
 
-# Install ca-certificates and required runtime dependencies
+# Install ca-certificates
 RUN apk add --no-cache ca-certificates tzdata
 
 # Set timezone
@@ -50,7 +47,6 @@ EXPOSE 8080
 
 # Environment variables
 ENV PORT=8080
-ENV GIN_MODE=release
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
