@@ -641,3 +641,61 @@ func TestUpdateTask_PatchNotFound(t *testing.T) {
 		t.Fatalf("expected 404, got %d", resp.StatusCode)
 	}
 }
+
+// ListTasks filter tests
+func TestListTasks_InvalidStatusFilter(t *testing.T) {
+	h, server := newTestServer(t)
+	defer server.Close()
+	// Create two tasks
+	id1 := createTask(t, server, "Task 1")
+	id2 := createTask(t, server, "Task 2")
+	// Mark one complete
+	updateBody, _ := json.Marshal(map[string]bool{"completed": true})
+	req, _ := http.NewRequest("PATCH", server.URL+"/tasks/"+id2, bytes.NewBuffer(updateBody))
+	req.Header.Set("Content-Type", "application/json")
+	http.DefaultClient.Do(req)
+	// Filter with invalid status should return all tasks (graceful fallback)
+	req, _ = http.NewRequest("GET", server.URL+"/tasks?status=invalid", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+	var tasks []models.Task
+	json.NewDecoder(resp.Body).Decode(&tasks)
+	if len(tasks) != 2 {
+		t.Errorf("expected 2 tasks (fallback), got %d", len(tasks))
+	}
+	_ = h
+}
+
+func TestListTasks_EmptyFilter(t *testing.T) {
+	h, server := newTestServer(t)
+	defer server.Close()
+	createTask(t, server, "Task 1")
+	createTask(t, server, "Task 2")
+	// No filter should return all tasks
+	req, _ := http.NewRequest("GET", server.URL+"/tasks", nil)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	}
+	var tasks []models.Task
+	json.NewDecoder(resp.Body).Decode(&tasks)
+	if len(tasks) != 2 {
+		t.Errorf("expected 2 tasks, got %d", len(tasks))
+	}
+	_ = h
+}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusNotFound {
+		t.Fatalf("expected 404, got %d", resp.StatusCode)
+	}
+}
