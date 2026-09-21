@@ -23,7 +23,6 @@ func main() {
 	mux.HandleFunc("/tasks", h.HandleTasks)
 	mux.HandleFunc("/tasks/", h.HandleTasks)
 	mux.HandleFunc("/health", h.HealthCheck)
-	mux.HandleFunc("/health", h.HealthCheck)
 
 	// Apply middleware chain: Recovery -> Logging -> CORS -> Handler
 	handler := middleware.Chain(mux,
