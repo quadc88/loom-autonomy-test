@@ -200,15 +200,73 @@ func TestHealthCheck_WithTasks(t *testing.T) {
 	}
 }
 
-func TestConcurrency(t *testing.T) {
+func TestReplace_NotFound(t *testing.T) {
+	store := NewInMemoryStore()
+	task := makeTask("replace test")
+	_, err := store.Replace("nonexistent", task)
+	if err == nil {
+		t.Error("expected error for nonexistent task")
+	}
+}
+
+func TestReplace_Success(t *testing.T) {
+	store := NewInMemoryStore()
+	original := makeTask("original")
+	store.Create(original)
+
+	replaced := &models.Task{
+		ID:          original.ID,
+		Title:       "replaced",
+		Description: "new description",
+		Completed:   true,
+		CreatedAt:   original.CreatedAt,
+		UpdatedAt:   time.Now().UTC(),
+	}
+	result, err := store.Replace(original.ID, replaced)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if result.Title != "replaced" {
+		t.Errorf("expected title 'replaced', got %s", result.Title)
+	}
+	if !result.Completed {
+		t.Error("expected task to be completed")
+	}
+	// Original creation time should be preserved
+	if result.CreatedAt != original.CreatedAt {
+		t.Error("expected CreatedAt to be preserved")
+	}
+}
+
+func TestReplace_Invalid(t *testing.T) {
+	store := NewInMemoryStore()
+	task := makeTask("orig")
+	store.Create(task)
+
+	invalid := &models.Task{
+		ID:          task.ID,
+		Title:       "", // empty title is invalid
+		Description: "test",
+		Completed:   false,
+		CreatedAt:   time.Now().UTC(),
+		UpdatedAt:   time.Now().UTC(),
+	}
+	_, err := store.Replace(task.ID, invalid)
+	if err == nil {
+		t.Error("expected error for invalid replacement")
+	}
+}
+
+func TestConcurrency_CreateRead(t *testing.T) {
 	store := NewInMemoryStore()
 	var wg sync.WaitGroup
+	// Concurrent creates
 	for i := 0; i < 100; i++ {
 		wg.Add(1)
 		go func(n int) {
 			defer wg.Done()
 			task := &models.Task{
-				ID:          fmt.Sprintf("concurrent-%d", n),
+				ID:          fmt.Sprintf("cr-%d", n),
 				Title:       fmt.Sprintf("task %d", n),
 				Description: "test",
 				Completed:   false,
@@ -219,11 +277,56 @@ func TestConcurrency(t *testing.T) {
 		}(i)
 	}
 	wg.Wait()
+	// Concurrent reads
+	for i := 0; i < 100; i++ {
+		wg.Add(1)
+		go func(n int) {
+			defer wg.Done()
+			store.Get(fmt.Sprintf("cr-%d", n))
+		}(i)
+	}
+	wg.Wait()
 	result, err := store.List(nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if len(result) != 100 {
 		t.Errorf("expected 100 tasks, got %d", len(result))
+	}
+}
+
+func TestConcurrency_MixedOperations(t *testing.T) {
+	store := NewInMemoryStore()
+	var wg sync.WaitGroup
+	for i := 0; i < 50; i++ {
+		wg.Add(1)
+		go func(n int) {
+			defer wg.Done()
+			id := fmt.Sprintf("mix-%d", n)
+			task := &models.Task{
+				ID:          id,
+				Title:       fmt.Sprintf("task %d", n),
+				Description: "test",
+				Completed:   false,
+				CreatedAt:   time.Now().UTC(),
+				UpdatedAt:   time.Now().UTC(),
+			}
+			store.Create(task)
+			if n%2 == 0 {
+				flag := true
+				store.Update(id, &models.TaskUpdate{Completed: &flag})
+			}
+			if n%3 == 0 {
+				store.Delete(id)
+			}
+		}(i)
+	}
+	wg.Wait()
+	result, err := store.List(nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(result) > 50 {
+		t.Errorf("expected at most 50 tasks, got %d", len(result))
 	}
 }
