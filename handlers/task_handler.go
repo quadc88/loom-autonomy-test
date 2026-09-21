@@ -59,18 +59,20 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
 	case http.MethodPatch, http.MethodPut:
 		id := extractID(path)
-		if id != "" && id != "health" {
-			h.UpdateTask(w, r)
+		if id == "" || id == "health" {
+			writeError(w, http.StatusBadRequest, "task ID is required")
 			return
 		}
-		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
+		h.UpdateTask(w, r)
+		return
 	case http.MethodDelete:
 		id := extractID(path)
-		if id != "" && id != "health" {
-			h.DeleteTask(w, r)
+		if id == "" || id == "health" {
+			writeError(w, http.StatusBadRequest, "task ID is required")
 			return
 		}
-		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
+		h.DeleteTask(w, r)
+		return
 	default:
 		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
 	}

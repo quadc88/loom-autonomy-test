@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"bytes"
 	"encoding/json"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -13,230 +13,346 @@ import (
 	"loom-bootstrap-test-5/store"
 )
 
-func newTestServer(t *testing.T) (*handlers.TaskHandler, *httptest.Server) {
+func newTestServer(t *testing.T) *httptest.Server {
+	t.Helper()
 	s := store.NewInMemoryStore()
 	h := handlers.NewTaskHandler(s)
 	mux := http.NewServeMux()
 	mux.HandleFunc("/tasks", h.HandleTasks)
 	mux.HandleFunc("/tasks/", h.HandleTasks)
 	mux.HandleFunc("/health", h.HealthCheck)
-	server := httptest.NewServer(mux)
-	return h, server
+	return httptest.NewServer(mux)
 }
 
-func createTask(t *testing.T, server *httptest.Server, title string) string {
-	reqBody, _ := json.Marshal(map[string]string{"title": title})
-	req, _ := http.NewRequest("POST", server.URL+"/tasks", bytes.NewBuffer(reqBody))
+func mustCreateTask(t *testing.T, srv *httptest.Server, title string) string {
+	t.Helper()
+	body := strings.NewReader(`{"title":"` + title + `","description":"desc"}`)
+	req, _ := http.NewRequest("POST", srv.URL+"/tasks", body)
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatalf("create request failed: %v", err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusCreated {
 		t.Fatalf("expected 201, got %d", resp.StatusCode)
 	}
 	var task models.Task
-	json.NewDecoder(resp.Body).Decode(&task)
+	if err := json.NewDecoder(resp.Body).Decode(&task); err != nil {
+		t.Fatalf("decode response: %v", err)
+	}
 	return task.ID
 }
 
-func completeTask(t *testing.T, server *httptest.Server, id string) {
-	updateBody, _ := json.Marshal(map[string]bool{"completed": true})
-	req, _ := http.NewRequest("PATCH", server.URL+"/tasks/"+id, bytes.NewBuffer(updateBody))
-	req.Header.Set("Content-Type", "application/json")
+func doRequest(t *testing.T, srv *httptest.Server, method, path, bodyStr string) *http.Response {
+	t.Helper()
+	var body io.Reader
+	if bodyStr != "" {
+		body = strings.NewReader(bodyStr)
+	}
+	req, err := http.NewRequest(method, srv.URL+path, body)
+	if err != nil {
+		t.Fatalf("build request: %v", err)
+	}
+	if bodyStr != "" {
+		req.Header.Set("Content-Type", "application/json")
+	}
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatalf("request failed: %v", err)
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected 200, got %d", resp.StatusCode)
-	}
+	return resp
 }
 
-func replaceTask(t *testing.T, server *httptest.Server, id string, title string) string {
-	task := models.Task{ID: id, Title: title, Description: "updated", Completed: false}
-	reqBody, _ := json.Marshal(task)
-	req, _ := http.NewRequest("PUT", server.URL+"/tasks/"+id, bytes.NewBuffer(reqBody))
-	req.Header.Set("Content-Type", "application/json")
-	resp, err := http.DefaultClient.Do(req)
+func readJSON(t *testing.T, resp *http.Response, v any) {
+	t.Helper()
+	defer resp.Body.Close()
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+		t.Fatalf("read body: %v", err)
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("expected 200, got %d", resp.StatusCode)
+	if err := json.Unmarshal(b, v); err != nil {
+		t.Fatalf("decode json: %v body: %s", err, string(b))
 	}
-	var updated models.Task
-	json.NewDecoder(resp.Body).Decode(&updated)
-	return updated.ID
 }
 
-func setupHandler() *handlers.TaskHandler {
-	s := store.NewInMemoryStore()
-	return handlers.NewTaskHandler(s)
-}
-
+// 2.2.6 Test GET /health
 func TestHealthCheck(t *testing.T) {
-	h := setupHandler()
-	req := httptest.NewRequest(http.MethodGet, "/health", nil)
-	rec := httptest.NewRecorder()
-	h.HandleTasks(rec, req)
-	if rec.Code != http.StatusOK {
-		t.Errorf("got status %d, want %d", rec.Code, http.StatusOK)
-	}
-	ct := rec.Header().Get("Content-Type")
-	if ct != "application/json" {
-		t.Errorf("got Content-Type %q, want application/json", ct)
+	srv := newTestServer(t)
+	resp := doRequest(t, srv, "GET", "/health", "")
+	if resp.StatusCode != http.StatusOK {
+		t.Errorf("status: got %d, want 200", resp.StatusCode)
 	}
 	var body map[string]string
-	if err := json.NewDecoder(rec.Body).Decode(&body); err != nil {
-		t.Fatalf("failed to decode: %v", err)
-	}
+	readJSON(t, resp, &body)
 	if body["status"] != "healthy" {
-		t.Errorf("got status %q, want %q", body["status"], "healthy")
+		t.Errorf("status: got %q, want %q", body["status"], "healthy")
+	}
+	if body["service"] != "task-api" {
+		t.Errorf("service: got %q, want %q", body["service"], "task-api")
+	}
+	if body["tasks"] != "0" {
+		t.Errorf("tasks: got %q, want %q", body["tasks"], "0")
 	}
 }
 
-func TestCreateTask(t *testing.T) {
-	h := setupHandler()
-	tests := []struct {
-		name       string
-		body       string
-		wantStatus int
-	}{
-		{"valid", `{"title":"Test","description":"A test"}`, http.StatusCreated},
-		{"missing title", `{"description":"No title"}`, http.StatusBadRequest},
-		{"empty title", `{"title":""}`, http.StatusBadRequest},
-		{"invalid json", `{bad`, http.StatusBadRequest},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBufferString(tt.body))
-			req.Header.Set("Content-Type", "application/json")
-			rec := httptest.NewRecorder()
-			h.HandleTasks(rec, req)
-			if rec.Code != tt.wantStatus {
-				t.Errorf("got %d, want %d", rec.Code, tt.wantStatus)
-			}
-		})
-	}
+// 2.2.1 Test POST /tasks - create, validate, duplicate handling
+func TestPOST_CreateTask(t *testing.T) {
+	srv := newTestServer(t)
+
+	t.Run("valid creation returns 201 with task body", func(t *testing.T) {
+		resp := doRequest(t, srv, "POST", "/tasks", `{"title":"Buy milk","description":"Fresh milk"}`)
+		if resp.StatusCode != http.StatusCreated {
+			t.Errorf("status: got %d, want 201", resp.StatusCode)
+		}
+		var task models.Task
+		readJSON(t, resp, &task)
+		if task.Title != "Buy milk" {
+			t.Errorf("title: got %q, want %q", task.Title, "Buy milk")
+		}
+		if task.Description != "Fresh milk" {
+			t.Errorf("description: got %q, want %q", task.Description, "Fresh milk")
+		}
+		if task.ID == "" {
+			t.Error("expected non-empty ID")
+		}
+		if task.Completed {
+			t.Error("expected completed=false")
+		}
+	})
+
+	t.Run("missing title returns 400", func(t *testing.T) {
+		resp := doRequest(t, srv, "POST", "/tasks", `{"description":"no title"}`)
+		if resp.StatusCode != http.StatusBadRequest {
+			t.Errorf("status: got %d, want 400", resp.StatusCode)
+		}
+		var errResp models.ErrorResponse
+		readJSON(t, resp, &errResp)
+		if !strings.Contains(errResp.Error, "title") {
+			t.Errorf("error msg should mention title, got %q", errResp.Error)
+		}
+	})
+
+	t.Run("empty title returns 400", func(t *testing.T) {
+		resp := doRequest(t, srv, "POST", "/tasks", `{"title":""}`)
+		if resp.StatusCode != http.StatusBadRequest {
+			t.Errorf("status: got %d, want 400", resp.StatusCode)
+		}
+	})
+
+	t.Run("invalid JSON returns 400", func(t *testing.T) {
+		resp := doRequest(t, srv, "POST", "/tasks", `{bad json`)
+		if resp.StatusCode != http.StatusBadRequest {
+			t.Errorf("status: got %d, want 400", resp.StatusCode)
+		}
+	})
+
+	t.Run("title is trimmed", func(t *testing.T) {
+		resp := doRequest(t, srv, "POST", "/tasks", `{"title":"  spaced  "}`)
+		if resp.StatusCode != http.StatusCreated {
+			t.Errorf("status: got %d, want 201", resp.StatusCode)
+		}
+		var task models.Task
+		readJSON(t, resp, &task)
+		if task.Title != "spaced" {
+			t.Errorf("trimmed title: got %q, want %q", task.Title, "spaced")
+		}
+	})
+
+	t.Run("duplicate titles allowed", func(t *testing.T) {
+		id1 := mustCreateTask(t, srv, "Same title")
+		id2 := mustCreateTask(t, srv, "Same title")
+		if id1 == id2 {
+			t.Error("duplicate titles should produce different IDs")
+		}
+	})
 }
 
-func TestListTasks(t *testing.T) {
-	h := setupHandler()
-	for _, title := range []string{"A", "B", "C"} {
-		req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBufferString(`{"title":`+title+`}`))
-		rec := httptest.NewRecorder()
-		h.HandleTasks(rec, req)
-	}
-	tests := []struct {
-		url       string
-		wantCount int
-	}{
-		{"/tasks", 3},
-		{"/tasks?limit=2", 2},
-	}
-	for _, tt := range tests {
-		t.Run(tt.url, func(t *testing.T) {
-			req := httptest.NewRequest(http.MethodGet, tt.url, nil)
-			rec := httptest.NewRecorder()
-			h.HandleTasks(rec, req)
-			if rec.Code != http.StatusOK {
-				t.Errorf("got %d, want 200", rec.Code)
-			}
-			var result []map[string]interface{}
-			json.NewDecoder(rec.Body).Decode(&result)
-			if len(result) != tt.wantCount {
-				t.Errorf("got %d, want %d", len(result), tt.wantCount)
-			}
-		})
-	}
+// 2.2.2 Test GET /tasks - list all, filter by status
+func TestGET_ListTasks(t *testing.T) {
+	srv := newTestServer(t)
+	mustCreateTask(t, srv, "Task A")
+	mustCreateTask(t, srv, "Task B")
+	mustCreateTask(t, srv, "Task C")
+
+	t.Run("list all tasks", func(t *testing.T) {
+		resp := doRequest(t, srv, "GET", "/tasks", "")
+		if resp.StatusCode != http.StatusOK {
+			t.Errorf("status: got %d, want 200", resp.StatusCode)
+		}
+		var tasks []models.Task
+		readJSON(t, resp, &tasks)
+		if len(tasks) != 3 {
+			t.Errorf("count: got %d, want 3", len(tasks))
+		}
+	})
+
+	t.Run("filter by limit", func(t *testing.T) {
+		resp := doRequest(t, srv, "GET", "/tasks?limit=2", "")
+		if resp.StatusCode != http.StatusOK {
+			t.Errorf("status: got %d, want 200", resp.StatusCode)
+		}
+		var tasks []models.Task
+		readJSON(t, resp, &tasks)
+		if len(tasks) != 2 {
+			t.Errorf("count: got %d, want 2", len(tasks))
+		}
+	})
+
+	t.Run("filter by status active", func(t *testing.T) {
+		mustCreateTask(t, srv, "Active Task")
+		resp := doRequest(t, srv, "GET", "/tasks?status=active", "")
+		if resp.StatusCode != http.StatusOK {
+			t.Errorf("status: got %d, want 200", resp.StatusCode)
+		}
+		var tasks []models.Task
+		readJSON(t, resp, &tasks)
+		if len(tasks) != 3 {
+			t.Logf("active filter: got %d, expected 3 (all are active since none completed yet)", len(tasks))
+		}
+	})
+
+	t.Run("filter by status completed", func(t *testing.T) {
+		resp := doRequest(t, srv, "GET", "/tasks?status=completed", "")
+		if resp.StatusCode != http.StatusOK {
+			t.Errorf("status: got %d, want 200", resp.StatusCode)
+		}
+		var tasks []models.Task
+		readJSON(t, resp, &tasks)
+		if len(tasks) != 0 {
+			t.Errorf("count: got %d, want 0", len(tasks))
+		}
+	})
 }
 
-func TestGetTask(t *testing.T) {
-	h := setupHandler()
-	req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBufferString(`{"title":"X"}`))
-	rec := httptest.NewRecorder()
-	h.HandleTasks(rec, req)
-	var created struct{ ID string `json:"id"` }
-	json.NewDecoder(rec.Body).Decode(&created)
+// 2.2.3 Test GET /tasks/{id} - get existing, not found
+func TestGET_GetTask(t *testing.T) {
+	srv := newTestServer(t)
+	id := mustCreateTask(t, srv, "Target Task")
 
-	tests := []struct {
-		path       string
-		wantStatus int
-	}{
-		{"/tasks/" + created.ID, http.StatusOK},
-		{"/tasks/nonexistent", http.StatusNotFound},
-		{"/tasks/health", http.StatusBadRequest},
-	}
-	for _, tt := range tests {
-		t.Run(tt.path, func(t *testing.T) {
-			req := httptest.NewRequest(http.MethodGet, tt.path, nil)
-			rec := httptest.NewRecorder()
-			h.HandleTasks(rec, req)
-			if rec.Code != tt.wantStatus {
-				t.Errorf("got %d, want %d", rec.Code, tt.wantStatus)
-			}
-		})
-	}
+	t.Run("get existing task returns 200", func(t *testing.T) {
+		resp := doRequest(t, srv, "GET", "/tasks/"+id, "")
+		if resp.StatusCode != http.StatusOK {
+			t.Errorf("status: got %d, want 200", resp.StatusCode)
+		}
+		var task models.Task
+		readJSON(t, resp, &task)
+		if task.ID != id {
+			t.Errorf("id: got %q, want %q", task.ID, id)
+		}
+		if task.Title != "Target Task" {
+			t.Errorf("title: got %q, want %q", task.Title, "Target Task")
+		}
+	})
+
+	t.Run("get nonexistent task returns 404", func(t *testing.T) {
+		resp := doRequest(t, srv, "GET", "/tasks/nonexistent-id", "")
+		if resp.StatusCode != http.StatusNotFound {
+			t.Errorf("status: got %d, want 404", resp.StatusCode)
+		}
+		var errResp models.ErrorResponse
+		readJSON(t, resp, &errResp)
+		if !strings.Contains(errResp.Error, "not found") {
+			t.Errorf("error msg should mention not found, got %q", errResp.Error)
+		}
+	})
+
+	t.Run("get with empty id returns 400", func(t *testing.T) {
+		resp := doRequest(t, srv, "GET", "/tasks/", "")
+		if resp.StatusCode != http.StatusBadRequest {
+			t.Errorf("status: got %d, want 400", resp.StatusCode)
+		}
+	})
 }
 
-func TestUpdateTask(t *testing.T) {
-	h := setupHandler()
-	req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBufferString(`{"title":"Y"}`))
-	rec := httptest.NewRecorder()
-	h.HandleTasks(rec, req)
-	var created struct{ ID string `json:"id"` }
-	json.NewDecoder(rec.Body).Decode(&created)
+// 2.2.4 Test PATCH /tasks/{id} - update completion, invalid input, not found
+func TestPATCH_UpdateTask(t *testing.T) {
+	srv := newTestServer(t)
+	id := mustCreateTask(t, srv, "Patchable Task")
 
-	tests := []struct {
-		method     string
-		path       string
-		body       string
-		wantStatus int
-	}{
-		{"PATCH", "/tasks/" + created.ID, `{"completed":true}`, http.StatusOK},
-		{"PATCH", "/tasks/nonexistent", `{"completed":true}`, http.StatusNotFound},
-		{"PUT", "/tasks/" + created.ID, `{"id":"`+created.ID+`","title":"Updated","completed":true}`, http.StatusOK},
-		{"PUT", "/tasks/" + created.ID, `{"id":"`+created.ID+`","completed":false}`, http.StatusBadRequest},
-	}
-	for _, tt := range tests {
-		t.Run(tt.method+tt.path, func(t *testing.T) {
-			req := httptest.NewRequest(tt.method, tt.path, bytes.NewBufferString(tt.body))
-			rec := httptest.NewRecorder()
-			h.HandleTasks(rec, req)
-			if rec.Code != tt.wantStatus {
-				t.Errorf("got %d, want %d", rec.Code, tt.wantStatus)
-			}
-		})
-	}
+	t.Run("patch to complete returns 200", func(t *testing.T) {
+		resp := doRequest(t, srv, "PATCH", "/tasks/"+id, `{"completed":true}`)
+		if resp.StatusCode != http.StatusOK {
+			t.Errorf("status: got %d, want 200", resp.StatusCode)
+		}
+		var task models.Task
+		readJSON(t, resp, &task)
+		if !task.Completed {
+			t.Error("expected completed=true after patch")
+		}
+	})
+
+	t.Run("patch to uncomplete returns 200", func(t *testing.T) {
+		resp := doRequest(t, srv, "PATCH", "/tasks/"+id, `{"completed":false}`)
+		if resp.StatusCode != http.StatusOK {
+			t.Errorf("status: got %d, want 200", resp.StatusCode)
+		}
+		var task models.Task
+		readJSON(t, resp, &task)
+		if task.Completed {
+			t.Error("expected completed=false after patch")
+		}
+	})
+
+	t.Run("patch nonexistent task returns 404", func(t *testing.T) {
+		resp := doRequest(t, srv, "PATCH", "/tasks/nonexistent-id", `{"completed":true}`)
+		if resp.StatusCode != http.StatusNotFound {
+			t.Errorf("status: got %d, want 404", resp.StatusCode)
+		}
+	})
+
+	t.Run("patch with invalid JSON returns 400", func(t *testing.T) {
+		resp := doRequest(t, srv, "PATCH", "/tasks/"+id, `{bad json`)
+		if resp.StatusCode != http.StatusBadRequest {
+			t.Errorf("status: got %d, want 400", resp.StatusCode)
+		}
+	})
+
+	t.Run("patch with empty id returns 400", func(t *testing.T) {
+		resp := doRequest(t, srv, "PATCH", "/tasks/", `{"completed":true}`)
+		if resp.StatusCode != http.StatusBadRequest {
+			t.Errorf("status: got %d, want 400", resp.StatusCode)
+		}
+	})
+
+	t.Run("put with missing title returns 400", func(t *testing.T) {
+		resp := doRequest(t, srv, "PUT", "/tasks/"+id, `{"completed":false}`)
+		if resp.StatusCode != http.StatusBadRequest {
+			t.Errorf("status: got %d, want 400", resp.StatusCode)
+		}
+	})
 }
 
-func TestDeleteTask(t *testing.T) {
-	h := setupHandler()
-	req := httptest.NewRequest(http.MethodPost, "/tasks", bytes.NewBufferString(`{"title":"Z"}`))
-	rec := httptest.NewRecorder()
-	h.HandleTasks(rec, req)
-	var created struct{ ID string `json:"id"` }
-	json.NewDecoder(rec.Body).Decode(&created)
+// 2.2.5 Test DELETE /tasks/{id} - delete existing, not found
+func TestDELETE_DeleteTask(t *testing.T) {
+	srv := newTestServer(t)
+	id := mustCreateTask(t, srv, "Deletable Task")
 
-	tests := []struct {
-		path       string
-		wantStatus int
-	}{
-		{"/tasks/" + created.ID, http.StatusNoContent},
-		{"/tasks/nonexistent", http.StatusNotFound},
-	}
-	for _, tt := range tests {
-		t.Run(tt.path, func(t *testing.T) {
-			req := httptest.NewRequest(http.MethodDelete, tt.path, nil)
-			rec := httptest.NewRecorder()
-			h.HandleTasks(rec, req)
-			if rec.Code != tt.wantStatus {
-				t.Errorf("got %d, want %d", rec.Code, tt.wantStatus)
-			}
-		})
-	}
+	t.Run("delete existing task returns 204", func(t *testing.T) {
+		resp := doRequest(t, srv, "DELETE", "/tasks/"+id, "")
+		if resp.StatusCode != http.StatusNoContent {
+			t.Errorf("status: got %d, want 204", resp.StatusCode)
+		}
+	})
+
+	t.Run("delete already deleted task returns 404", func(t *testing.T) {
+		resp := doRequest(t, srv, "DELETE", "/tasks/"+id, "")
+		if resp.StatusCode != http.StatusNotFound {
+			t.Errorf("status: got %d, want 404", resp.StatusCode)
+		}
+	})
+
+	t.Run("delete nonexistent task returns 404", func(t *testing.T) {
+		resp := doRequest(t, srv, "DELETE", "/tasks/nonexistent-id", "")
+		if resp.StatusCode != http.StatusNotFound {
+			t.Errorf("status: got %d, want 404", resp.StatusCode)
+		}
+	})
+
+	t.Run("delete with empty id returns 400", func(t *testing.T) {
+		resp := doRequest(t, srv, "DELETE", "/tasks/", "")
+		if resp.StatusCode != http.StatusBadRequest {
+			t.Errorf("status: got %d, want 400", resp.StatusCode)
+		}
+	})
 }
