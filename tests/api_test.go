@@ -131,7 +131,7 @@ func TestListTasks_StatusActive(t *testing.T) {
 func TestListTasks_StatusCompleted(t *testing.T) {
 	_, server := newTestServer(t)
 	defer server.Close()
-	id1 := createTask(t, server, "Active Task")
+	createTask(t, server, "Active Task")
 	id2 := createTask(t, server, "Completed Task")
 	completeTask(t, server, id2)
 

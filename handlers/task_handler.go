@@ -37,12 +37,16 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 	switch r.Method {
 	case http.MethodGet:
-		if path == "/tasks" || path == "/tasks/" {
+		if path == "/tasks" {
 			h.ListTasks(w, r)
 			return
 		}
 		id := extractID(path)
-		if id != "" && id != "health" {
+		if id == "" {
+			writeError(w, http.StatusBadRequest, "task ID is required")
+			return
+		}
+		if id != "health" {
 			h.GetTask(w, r)
 			return
 		}
