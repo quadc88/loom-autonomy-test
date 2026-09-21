@@ -71,4 +71,8 @@
 # - linear.api_key  → use LINEAR_API_KEY env var instead
 # - github.token    → use GITHUB_TOKEN env var instead
 
+<<<<<<< HEAD
 sync.remote: "git+https://github.com/quadc88/loom-autonomy-test.git"
+=======
+sync.remote: "git+https://quadc88@github.com/quadc88/loom-autonomy-test.git"
+>>>>>>> origin/main

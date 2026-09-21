@@ -1,5 +1,6 @@
 # Task REST API
 
+<<<<<<< HEAD
 A minimal production-quality Task REST API built with Go. Supports creating, listing, retrieving, updating, and deleting tasks with an in-memory store.
 
 ## Features
@@ -68,16 +69,46 @@ Content-Type: application/json
   "completed": true
 }
 ```
+=======
+A minimal production-quality Task REST API built with Python stdlib.
+
+## Features
+
+- Create tasks
+- List all tasks
+- Get task by ID
+- Mark task as completed
+- Delete task
+- Health check endpoint
+- JSON responses with proper HTTP status codes
+- In-memory store (restart clears data)
+
+## API Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | /health | Health check |
+| GET | /tasks | List all tasks |
+| POST | /tasks | Create a task |
+| GET | /tasks/:id | Get task by ID |
+| PUT | /tasks/:id | Mark task as done |
+| DELETE | /tasks/:id | Delete a task |
+>>>>>>> origin/main
 
 ## Local Development
 
 ### Prerequisites
 
+<<<<<<< HEAD
 - Go 1.21 or later
+=======
+- Python 3.11+
+>>>>>>> origin/main
 
 ### Run Locally
 
 ```bash
+<<<<<<< HEAD
 go run .
 ```
 
@@ -85,11 +116,19 @@ The server starts on port `8080` by default. Use the `PORT` environment variable
 
 ```bash
 PORT=3000 go run .
+=======
+# Start the server
+python3 app.py
+
+# In another terminal, test the API
+curl http://localhost:8080/health
+>>>>>>> origin/main
 ```
 
 ### Run Tests
 
 ```bash
+<<<<<<< HEAD
 go test ./...
 ```
 
@@ -103,6 +142,9 @@ go test ./... -v
 
 ```bash
 go build -o task-api .
+=======
+python3 tests.py
+>>>>>>> origin/main
 ```
 
 ## Docker
@@ -119,6 +161,7 @@ docker build -t task-api .
 docker run -p 8080:8080 task-api
 ```
 
+<<<<<<< HEAD
 With custom port:
 
 ```bash
@@ -167,12 +210,63 @@ curl -X PATCH http://localhost:8080/tasks/{id} \
 ### Delete Task
 ```bash
 curl -X DELETE http://localhost:8080/tasks/{id}
+=======
+### Test with Docker
+
+```bash
+curl http://localhost:8080/health
+curl -X POST http://localhost:8080/tasks -H "Content-Type: application/json" -d '{"title":"My Task"}'
+curl http://localhost:8080/tasks
+```
+
+## Example Requests
+
+```bash
+# Create a task
+curl -X POST http://localhost:8080/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Learn Python"}'
+
+# List all tasks
+curl http://localhost:8080/tasks
+
+# Get task by ID
+curl http://localhost:8080/tasks/1
+
+# Mark task as done
+curl -X PUT http://localhost:8080/tasks/1
+
+# Delete task
+curl -X DELETE http://localhost:8080/tasks/1
+
+# Health check
+curl http://localhost:8080/health
+```
+
+## Response Format
+
+### Success Response
+```json
+{
+  "id": "1",
+  "title": "Learn Python",
+  "done": false
+}
+```
+
+### Error Response
+```json
+{
+  "error": "task not found"
+}
+>>>>>>> origin/main
 ```
 
 ## Project Structure
 
 ```
 .
+<<<<<<< HEAD
 ├── main.go              # Application entry point
 ├── go.mod               # Go module definition
 ├── go.sum               # Go dependencies checksum
@@ -216,3 +310,10 @@ Common status codes:
 ## License
 
 MIT
+=======
+├── app.py          # Main application
+├── tests.py        # Test suite
+├── Dockerfile      # Container configuration
+└── README.md       # This file
+```
+>>>>>>> origin/main

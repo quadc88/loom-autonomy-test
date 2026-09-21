@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Multi-stage Dockerfile for Task REST API
 
 # Build stage
@@ -53,3 +54,14 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
 
 CMD ["./task-api"]
+=======
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY app.py .
+
+EXPOSE 8080
+
+CMD ["python3", "app.py"]
+>>>>>>> origin/main
