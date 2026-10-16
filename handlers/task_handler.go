@@ -42,15 +42,11 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		id := extractID(path)
-		if id == "" {
+		if id == "" || id == "health" {
 			writeError(w, http.StatusBadRequest, "task ID is required")
 			return
 		}
-		if id != "health" {
-			h.GetTask(w, r)
-			return
-		}
-		writeError(w, http.StatusBadRequest, "invalid path")
+		h.GetTask(w, r)
 	case http.MethodPost:
 		if path == "/tasks" || path == "/tasks/" {
 			h.CreateTask(w, r)
@@ -64,7 +60,6 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		h.UpdateTask(w, r)
-		return
 	case http.MethodDelete:
 		id := extractID(path)
 		if id == "" || id == "health" {
@@ -72,7 +67,6 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		h.DeleteTask(w, r)
-		return
 	default:
 		writeError(w, http.StatusMethodNotAllowed, "method not allowed")
 	}
