@@ -1,0 +1,47 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3267
+type: task
+title: '[Bootstrap] Decompose SRD into Epics, Stories, and Tasks'
+description: |-
+    Based on the System Requirements Document (SRD) at plans/SRD.md, create a comprehensive bead hierarchy that decomposes the system into:
+
+    1. **Epics** - Major functional areas (e.g., Task Management, API Endpoints, Testing, Infrastructure)
+    2. **Stories** - User-facing features within each epic (e.g., "As a user, I can create a task" → Story under Task Creation epic)
+    3. **Tasks** - Concrete implementation steps derived from each story
+
+    The SRD is located at plans/SRD.md and has already been committed to the repository.
+
+    Requirements for the decomposition:
+    - Each epic should have a clear title and description
+    - Stories should be written in user-story format (As a ... I want ... So that ...)
+    - Tasks should be actionable, testable items with clear acceptance criteria
+    - Priority order (P0, P1, P2) based on the SRD's must-have vs nice-to-have
+    - Estimated complexity for each task
+
+    Create the bead hierarchy and assign appropriate priorities. This will drive the implementation work for the Task REST API project.
+status: open
+priority: 1
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-10-16T06:36:39.805457137Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20261016063639798826433V7DKOg9x)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-10-16T06:36:39Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20261016063639798826433V7DKOg9x)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T06:29:47.661853178Z
+updatedat: 2026-10-16T06:36:39.805469611Z
+closedat: null
