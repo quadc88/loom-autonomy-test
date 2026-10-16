@@ -22,7 +22,7 @@ description: |-
     - Status codes verified
     - Response bodies validated
     - Error messages checked
-status: closed
+status: open
 priority: 1
 projectid: loom-bootstrap-test-5
 assignedto: ""
@@ -46,5 +46,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-21T01:04:05.834911136Z
-updatedat: 2026-10-16T07:09:42.337544893Z
-closedat: 2026-10-16T07:09:42.33754437Z
+updatedat: 2026-10-16T10:25:46.106452965Z
+closedat: null
