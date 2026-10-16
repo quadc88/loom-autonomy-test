@@ -24,10 +24,10 @@ description: |-
     - UUID v4 for task IDs
     - ISO 8601 timestamps
     - JSON responses with proper HTTP status codes
-status: in_progress
+status: open
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-75cd3f21
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -42,11 +42,11 @@ context:
     loop_detected: "false"
     loop_detected_at: ""
     loop_detected_reason: ""
-    recovered_at: "2026-10-16T16:21:10Z"
+    recovered_at: "2026-10-16T16:24:58Z"
     recovery_reason: transient infrastructure failure resolved — re-queued by recovery sweep
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T06:55:04.685215721Z
-updatedat: 2026-10-16T16:21:13.890196033Z
+updatedat: 2026-10-16T16:24:58.964282045Z
 closedat: null
