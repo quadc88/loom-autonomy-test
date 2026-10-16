@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"loom-bootstrap-test-5/models"
 	"loom-bootstrap-test-5/store"
 )
@@ -117,6 +118,11 @@ func (h *TaskHandler) GetTask(w http.ResponseWriter, r *http.Request) {
 	id := extractID(r.URL.Path)
 	if id == "" {
 		writeError(w, http.StatusBadRequest, "task ID is required")
+		return
+	}
+	// Validate UUID format
+	if _, err := uuid.Parse(id); err != nil {
+		writeError(w, http.StatusBadRequest, "invalid task ID format")
 		return
 	}
 	task, err := h.store.Get(id)

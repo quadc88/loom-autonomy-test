@@ -263,6 +263,18 @@ func TestGET_GetTask(t *testing.T) {
 			t.Errorf("status: got %d, want 400", resp.StatusCode)
 		}
 	})
+
+	t.Run("get with invalid UUID format returns 400", func(t *testing.T) {
+		resp := doRequest(t, srv, "GET", "/tasks/invalid-id", "")
+		if resp.StatusCode != http.StatusBadRequest {
+			t.Errorf("status: got %d, want 400", resp.StatusCode)
+		}
+		var errResp models.ErrorResponse
+		readJSON(t, resp, &errResp)
+		if !strings.Contains(errResp.Error, "invalid") {
+			t.Errorf("error msg should mention invalid, got %q", errResp.Error)
+		}
+	})
 }
 
 // 2.2.4 Test PATCH /tasks/{id} - update completion, invalid input, not found
