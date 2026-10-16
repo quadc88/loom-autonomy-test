@@ -42,10 +42,10 @@ description: |-
     - 处理器逻辑: 85%+
 
     建议后续：可添加更多的边界条件测试和并发测试。
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-fe80dd0b
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -57,5 +57,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-10-16T06:41:19.619441685Z
-updatedat: 2026-10-16T06:44:55.958200931Z
-closedat: null
+updatedat: 2026-10-16T06:45:02.190878271Z
+closedat: 2026-10-16T06:45:02.190877295Z
