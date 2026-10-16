@@ -1,0 +1,53 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3292
+type: story
+title: 'Story 3.1: Dockerfile with Multi-Stage Build'
+description: |-
+    Create a production-ready Dockerfile for the Task REST API.
+
+    Tasks:
+    - [ ] Create multi-stage Dockerfile
+    - [ ] Build stage: use golang:1.21-alpine
+    - [ ] Runtime stage: use alpine:3.19
+    - [ ] Set working directory and copy files
+    - [ ] Compile Go binary in build stage
+    - [ ] Copy binary to runtime stage
+    - [ ] Expose port 8080
+    - [ ] Add HEALTHCHECK instruction for GET /health
+    - [ ] Set entrypoint to run the binary
+
+    Acceptance Criteria:
+    - Docker image builds successfully
+    - Image size is optimized (small footprint)
+    - Container runs and responds to /health
+    - Health check passes within Docker
+
+    Priority: P2
+    Complexity: Easy
+    Estimated: 1-2 hours
+status: open
+priority: 2
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-10-16T11:48:16.02777054Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 2026101611481622647701JOlGVCV4)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-10-16T11:48:16Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 2026101611481622647701JOlGVCV4)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T10:36:35.820155887Z
+updatedat: 2026-10-16T11:48:16.027785325Z
+closedat: null
