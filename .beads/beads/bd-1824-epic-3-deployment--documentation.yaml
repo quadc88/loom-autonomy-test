@@ -20,10 +20,10 @@ description: |-
     - README covers local/Docker setup, all endpoints, and usage examples
     - CORS middleware configurable via environment variables
     - Panic recovery middleware in place
-status: open
+status: in_progress
 priority: 2
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-497bee68
 blockedby: []
 blocks: []
 relatedto: []
@@ -47,5 +47,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T12:02:50.423689308Z
-updatedat: 2026-10-16T20:06:45.608398607Z
+updatedat: 2026-10-16T20:06:48.918127048Z
 closedat: null
