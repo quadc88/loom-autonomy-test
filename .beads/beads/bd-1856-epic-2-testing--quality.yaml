@@ -23,7 +23,7 @@ description: |-
 status: blocked
 priority: 1
 projectid: loom-bootstrap-test-5
-assignedto: agent-1787558394-Engineering Manager (Default)
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -38,14 +38,11 @@ context:
     loop_detected: "true"
     loop_detected_at: "2026-10-16T16:50:19Z"
     loop_detected_reason: Repeated rate limit errors (10 attempts) - exhausted provider quota. Consider increasing the budget or resetting the counter.
-    ralph_blocked_at: "2026-10-16T16:50:34Z"
-    ralph_blocked_reason: 'auto-blocked by Ralph: Repeated rate limit errors (10 attempts) - exhausted provider quota. Consider increasing the budget or resetting the counter.'
     recovered_at: "2026-10-16T16:20:16Z"
     recovery_reason: transient infrastructure failure resolved — re-queued by recovery sweep
-    redispatch_requested: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T20:02:23.827974493Z
-updatedat: 2026-10-16T16:50:34.673820498Z
+updatedat: 2026-10-16T16:50:19.330432108Z
 closedat: null
