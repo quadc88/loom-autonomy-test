@@ -1,0 +1,41 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3276
+type: story
+title: 'Story 1.0: Main Entry Point and Server Setup'
+description: |-
+    Create main.go entry point and wire all components together.
+
+    Tasks:
+    - [ ] Create main.go with server initialization
+    - [ ] Initialize in-memory store with mutex
+    - [ ] Register all route handlers
+    - [ ] Wire middleware (logging, recovery, CORS)
+    - [ ] Parse PORT environment variable (default: 8080)
+    - [ ] Start HTTP server
+
+    Acceptance Criteria:
+    - Server starts and listens on configured port
+    - All routes are registered correctly
+    - Middleware is applied to all handlers
+    - Graceful shutdown on SIGTERM/SIGINT
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-d5fa9b83
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T07:35:46.834531061Z
+updatedat: 2026-10-16T08:26:53.876043929Z
+closedat: null
