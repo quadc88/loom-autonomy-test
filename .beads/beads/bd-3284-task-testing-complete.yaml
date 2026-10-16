@@ -23,10 +23,10 @@ description: |-
     - Invalid HTTP methods
 
     **Status:** All tests pass (go test ./... -v returned exit code 0). Code committed and pushed to feat/task-store-tests branch.
-status: in_progress
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-66add52f
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -43,5 +43,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-10-16T08:07:08.162181608Z
-updatedat: 2026-10-16T09:25:59.472486866Z
-closedat: null
+updatedat: 2026-10-16T09:26:05.906629583Z
+closedat: 2026-10-16T09:26:05.906628899Z
