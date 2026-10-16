@@ -50,3 +50,45 @@ func TestHandler_PostTaskList(t *testing.T) {
 		t.Errorf("expected 400 for empty body, got %d", w.Code)
 	}
 }
+
+func TestHandler_DeleteTask_Success(t *testing.T) {
+	h := setupHandler()
+	// Create a task first
+	reqBody := `{"title":"Test Task","description":"A test"}`
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(reqBody))
+	r.Header.Set("Content-Type", "application/json")
+	h.HandleTasks(w, r)
+	if w.Code != http.StatusCreated {
+		t.Fatalf("expected 201 on create, got %d", w.Code)
+	}
+	// Extract ID from response
+	var created map[string]string
+	json.NewDecoder(w.Body).Decode(&created)
+	id := created["id"]
+
+	// Delete the task
+	w = handleRequest(h, http.MethodDelete, "/tasks/"+id)
+	if w.Code != http.StatusNoContent {
+		t.Errorf("expected 204 on delete, got %d", w.Code)
+	}
+
+	// Verify task is gone via GET
+	w = handleRequest(h, http.MethodGet, "/tasks/"+id)
+	if w.Code != http.StatusNotFound {
+		t.Errorf("expected 404 after delete, got %d", w.Code)
+	}
+}
+
+func TestHandler_DeleteTask_NotFound(t *testing.T) {
+	h := setupHandler()
+	w := handleRequest(h, http.MethodDelete, "/tasks/nonexistent-id")
+	if w.Code != http.StatusNotFound {
+		t.Errorf("expected 404 for non-existent task, got %d", w.Code)
+	}
+	var errResp map[string]string
+	json.NewDecoder(w.Body).Decode(&errResp)
+	if errResp["error"] != "task not found" {
+		t.Errorf("expected 'task not found' error, got %s", errResp["error"])
+	}
+}
