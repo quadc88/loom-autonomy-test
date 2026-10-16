@@ -1,6 +1,6 @@
 package store
+
 import (
-	"sync"
 	"testing"
 	"loom-bootstrap-test-5/models"
 )
