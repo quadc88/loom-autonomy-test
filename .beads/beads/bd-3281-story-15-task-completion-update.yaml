@@ -1,0 +1,40 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3281
+type: story
+title: 'Story 1.5: Task Completion Update'
+description: |-
+    Implement PATCH /tasks/{id} endpoint for updating task completion status.
+
+    Tasks:
+    - [ ] Implement PATCH /tasks/{id} handler function
+    - [ ] Parse JSON body with completed field
+    - [ ] Update task in store
+    - [ ] Update updated_at timestamp
+    - [ ] Return updated task JSON
+
+    Acceptance Criteria:
+    - Returns 200 with updated task JSON
+    - Returns 400 if request body is invalid JSON or missing required fields
+    - Returns 404 if task not found
+    - Updates updated_at timestamp on successful update
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-66add52f
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T07:41:33.767356273Z
+updatedat: 2026-10-16T08:07:45.857154094Z
+closedat: null
