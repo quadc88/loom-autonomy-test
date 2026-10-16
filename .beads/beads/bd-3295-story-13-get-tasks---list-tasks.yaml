@@ -1,0 +1,42 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3295
+type: story
+title: 'Story 1.3: GET /tasks - List Tasks'
+description: |-
+    Implement the GET /tasks endpoint for listing tasks with optional filtering.
+
+    Tasks:
+    - [ ] Implement GET /tasks handler
+    - [ ] Support optional ?status=active|completed query parameter
+    - [ ] Return array of tasks in JSON format
+
+    Acceptance Criteria:
+    - Returns 200 with task array
+    - Filtering by status works correctly
+    - Empty list returns empty JSON array []
+    - Invalid status filter is ignored (returns all tasks)
+
+    Priority: P0
+    Complexity: Easy
+    Estimated: 1 hour
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-66add52f
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T10:37:07.86656081Z
+updatedat: 2026-10-16T10:37:49.902701304Z
+closedat: null
