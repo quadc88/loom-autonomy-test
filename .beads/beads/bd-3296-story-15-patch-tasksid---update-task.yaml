@@ -1,0 +1,49 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3296
+type: story
+title: 'Story 1.5: PATCH /tasks/{id} - Update Task'
+description: |-
+    Implement the PATCH /tasks/{id} endpoint for updating task status.
+
+    Tasks:
+    - [ ] Implement PATCH /tasks/{id} handler
+    - [ ] Parse JSON body with completed field
+    - [ ] Update task in store
+    - [ ] Return updated task with new updated_at timestamp
+
+    Acceptance Criteria:
+    - Returns 200 with updated task JSON
+    - Returns 400 if request body is invalid JSON
+    - Returns 400 if completed field is not a boolean
+    - Returns 404 if task not found
+    - Updates updated_at timestamp on successful update
+
+    Priority: P0
+    Complexity: Easy
+    Estimated: 1 hour
+status: open
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-10-16T10:37:56.779848813Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20261016103756735048131yTyRb8vj)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-10-16T10:37:56Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20261016103756735048131yTyRb8vj)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T10:37:18.150723311Z
+updatedat: 2026-10-16T10:37:56.779864801Z
+closedat: null
