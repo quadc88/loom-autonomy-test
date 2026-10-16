@@ -27,10 +27,10 @@ description: |-
     Priority: P0
     Complexity: Medium
     Estimated: 2-3 hours
-status: open
+status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-27c1dc11
 blockedby: []
 blocks: []
 relatedto: []
@@ -51,5 +51,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-10-16T10:36:57.885459177Z
-updatedat: 2026-10-16T10:44:48.905142251Z
+updatedat: 2026-10-16T10:46:06.039377242Z
 closedat: null
