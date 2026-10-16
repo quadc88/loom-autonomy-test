@@ -1,0 +1,47 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3300
+type: story
+title: 'Story 1.6: DELETE /tasks/{id} - Delete Task'
+description: |-
+    Implement the DELETE /tasks/{id} endpoint for deleting tasks.
+
+    Tasks:
+    - [ ] Implement DELETE /tasks/{id} handler
+    - [ ] Remove task from store
+    - [ ] Return 204 No Content on success
+    - [ ] Return 404 if task not found
+
+    Acceptance Criteria:
+    - Returns 204 with no content on successful deletion
+    - Returns 404 with {"error": "task not found"} if task not found
+    - Task is actually removed from store (verify with GET after delete)
+
+    Priority: P0
+    Complexity: Easy
+    Estimated: 1 hour
+status: open
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-10-16T11:43:54.329647574Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20261016114354325568765EGTa1nfc)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-10-16T11:43:54Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 20261016114354325568765EGTa1nfc)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T11:43:40.52237705Z
+updatedat: 2026-10-16T11:43:54.329677179Z
+closedat: null
