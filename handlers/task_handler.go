@@ -180,5 +180,6 @@ func (h *TaskHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *TaskHandler) HealthCheck(w http.ResponseWriter, r *http.Request) {
-	writeJSON(w, http.StatusOK, map[string]string{"status": "healthy"})
+	stats := h.store.HealthCheck()
+	writeJSON(w, http.StatusOK, stats)
 }
