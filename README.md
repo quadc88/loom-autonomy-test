@@ -12,9 +12,9 @@ A minimal production-quality Task REST API built with Go. Supports creating, lis
 - Health check endpoint
 - Thread-safe in-memory store with UUID v4 IDs
 - JSON responses with proper HTTP status codes
-- CORS support
+- CORS support (configurable via environment variables)
 - Recovery and logging middleware
-- Docker support
+- Docker support with multi-stage build
 
 ## API Endpoints
 
@@ -87,6 +87,16 @@ The server starts on port `8080` by default. Use the `PORT` environment variable
 PORT=3000 go run .
 ```
 
+### Configure CORS
+
+Set the `ALLOWED_ORIGINS` environment variable to restrict CORS:
+
+```bash
+ALLOWED_ORIGINS=https://example.com,https://api.example.com go run .
+```
+
+Leave empty or unset to allow all origins (default behavior).
+
 ### Run Tests
 
 ```bash
@@ -123,6 +133,12 @@ With custom port:
 
 ```bash
 docker run -p 8080:8080 -e PORT=3000 task-api
+```
+
+With restricted CORS:
+
+```bash
+docker run -p 8080:8080 -e ALLOWED_ORIGINS=https://example.com task-api
 ```
 
 ### Docker Health Check

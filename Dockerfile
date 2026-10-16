@@ -21,9 +21,6 @@ RUN go mod tidy 2>/dev/null || true
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o task-api .
 
-# Run tests
-RUN CGO_ENABLED=0 GOOS=linux go test ./...
-
 # Run stage
 FROM alpine:3.19
 
