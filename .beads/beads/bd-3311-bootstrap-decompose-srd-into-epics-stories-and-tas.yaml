@@ -1,0 +1,42 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3311
+type: task
+title: '[Bootstrap] Decompose SRD into Epics, Stories, and Tasks'
+description: |-
+    Based on the System Requirements Document (SRD) at plans/SRD.md, create a comprehensive bead hierarchy that decomposes the system into:
+
+    1. **Epics** - Major functional areas (e.g., Task Management, API Endpoints, Testing, Infrastructure)
+    2. **Stories** - User-facing features within each epic (e.g., "As a user, I can create a task" → Story under Task Creation epic)
+    3. **Tasks** - Concrete implementation steps derived from each story
+
+    The SRD is located at plans/SRD.md and contains all required sections: system architecture, data models, API contracts, integration points, infrastructure requirements, security requirements, and implementation constraints.
+
+    Requirements for the decomposition:
+    - Each epic should have a clear title and description
+    - Stories should be written in user-story format (As a ... I want ... So that ...)
+    - Tasks should be actionable, testable items with clear acceptance criteria
+    - Priority order (P0, P1, P2) based on the SRD's must-have vs nice-to-have
+    - Estimated complexity for each task
+
+    Create the bead hierarchy and assign appropriate priorities. This will drive the implementation work for the Task REST API project.
+status: in_progress
+priority: 1
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-27c1dc11
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T12:22:09.088636555Z
+updatedat: 2026-10-16T12:23:58.533659202Z
+closedat: null
