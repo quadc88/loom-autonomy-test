@@ -3,6 +3,7 @@ package tests
 import (
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"loom-bootstrap-test-5/handlers"
@@ -86,6 +87,102 @@ func TestHandler_DeleteTask_NotFound(t *testing.T) {
 	if w.Code != http.StatusNotFound {
 		t.Errorf("expected 404 for non-existent task, got %d", w.Code)
 	}
+}
+
+func TestCreateTask_MissingTitle_Returns400(t *testing.T) {
+	h := setupHandler()
+	reqBody := `{"description":"no title"}`
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(reqBody))
+	r.Header.Set("Content-Type", "application/json")
+	h.HandleTasks(w, r)
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected 400 for missing title, got %d", w.Code)
+	}
+	var errResp map[string]string
+	json.NewDecoder(w.Body).Decode(&errResp)
+	if errResp["error"] != "title is required" {
+		t.Errorf("expected 'title is required' error, got %s", errResp["error"])
+	}
+}
+
+func TestCreateTask_EmptyTitle_Returns400(t *testing.T) {
+	h := setupHandler()
+	reqBody := `{"title":""}`
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(reqBody))
+	r.Header.Set("Content-Type", "application/json")
+	h.HandleTasks(w, r)
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected 400 for empty title, got %d", w.Code)
+	}
+	var errResp map[string]string
+	json.NewDecoder(w.Body).Decode(&errResp)
+	if errResp["error"] != "title is required" {
+		t.Errorf("expected 'title is required' error, got %s", errResp["error"])
+	}
+}
+
+func TestCreateTask_TitleTooLong_Returns400(t *testing.T) {
+	h := setupHandler()
+	longTitle := strings.Repeat("a", 256)
+	reqBody := `{"title":"` + longTitle + `"}`
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(reqBody))
+	r.Header.Set("Content-Type", "application/json")
+	h.HandleTasks(w, r)
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected 400 for title > 255 chars, got %d", w.Code)
+	}
+	var errResp map[string]string
+	json.NewDecoder(w.Body).Decode(&errResp)
+	if errResp["error"] != "title must be 255 characters or less" {
+		t.Errorf("expected 'title must be 255 characters or less' error, got %s", errResp["error"])
+	}
+}
+
+func TestCreateTask_DescriptionTooLong_Returns400(t *testing.T) {
+	h := setupHandler()
+	longDesc := strings.Repeat("a", 10001)
+	reqBody := `{"title":"Test","description":"` + longDesc + `"}`
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(reqBody))
+	r.Header.Set("Content-Type", "application/json")
+	h.HandleTasks(w, r)
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected 400 for description > 10000 chars, got %d", w.Code)
+	}
+	var errResp map[string]string
+	json.NewDecoder(w.Body).Decode(&errResp)
+	if errResp["error"] != "description must be 10000 characters or less" {
+		t.Errorf("expected 'description must be 10000 characters or less' error, got %s", errResp["error"])
+	}
+}
+
+func TestCreateTask_InvalidJSON_Returns400(t *testing.T) {
+	h := setupHandler()
+	reqBody := `{invalid json}`
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest(http.MethodPost, "/tasks", strings.NewReader(reqBody))
+	r.Header.Set("Content-Type", "application/json")
+	h.HandleTasks(w, r)
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected 400 for invalid JSON, got %d", w.Code)
+	}
+	var errResp map[string]string
+	json.NewDecoder(w.Body).Decode(&errResp)
+	if errResp["error"] != "invalid request body" {
+		t.Errorf("expected 'invalid request body' error, got %s", errResp["error"])
+	}
+}
+
+func TestGetTask_MalformedUUID_Returns400(t *testing.T) {
+	h := setupHandler()
+	w := handleRequest(h, http.MethodGet, "/tasks/not-a-uuid")
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected 400 for malformed UUID, got %d", w.Code)
+	}
+}
 	var errResp map[string]string
 	json.NewDecoder(w.Body).Decode(&errResp)
 	if errResp["error"] != "task not found" {
