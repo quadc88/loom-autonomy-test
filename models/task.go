@@ -37,11 +37,12 @@ var idCounter uint64
 
 func generateID() string {
 	idCounter++
+	temp := idCounter
 	const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	buf := make([]byte, 8)
 	for i := range buf {
-		buf[i] = chars[idCounter%uint64(len(chars))]
-		idCounter /= uint64(len(chars))
+		buf[i] = chars[temp%uint64(len(chars))]
+		temp /= uint64(len(chars))
 	}
 	return string(buf)
 }
