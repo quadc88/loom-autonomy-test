@@ -23,10 +23,10 @@ description: |-
     - Estimated complexity for each task
 
     Create the bead hierarchy and assign appropriate priorities. This will drive the implementation work for the Task REST API project.
-status: in_progress
+status: open
 priority: 1
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-66add52f
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
@@ -43,5 +43,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-10-16T07:17:00.479253997Z
-updatedat: 2026-10-16T07:41:33.767541706Z
+updatedat: 2026-10-16T07:41:37.14498383Z
 closedat: null
