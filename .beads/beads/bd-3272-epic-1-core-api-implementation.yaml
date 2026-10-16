@@ -1,0 +1,47 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3272
+type: epic
+title: 'Epic 1: Core API Implementation'
+description: |-
+    Implement all core API endpoints for the Task REST API with in-memory store.
+
+    Stories in this epic:
+    - Story 1.1: In-Memory Task Store (models + store)
+    - Story 1.2: POST /tasks - Create Task
+    - Story 1.3: GET /tasks - List Tasks with optional status filter
+    - Story 1.4: GET /tasks/{id} - Get Task by ID
+    - Story 1.5: PATCH /tasks/{id} - Update Task (mark completed)
+    - Story 1.6: DELETE /tasks/{id} - Delete Task
+    - Story 1.7: GET /health - Health Check
+
+    Priority: P0 (Must have)
+    Assignee: backend-engineer
+
+    Implementation notes:
+    - Use Go 1.21+ with net/http standard library only
+    - Generate UUID v4 for task IDs
+    - Use sync.RWMutex for thread-safe in-memory store
+    - Return JSON with proper HTTP status codes
+    - Validate: title required (max 255 chars), description optional (max 10000 chars)
+    - ISO 8601 UTC timestamps
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-fe80dd0b
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T07:28:56.062313432Z
+updatedat: 2026-10-16T07:41:50.754089829Z
+closedat: null
