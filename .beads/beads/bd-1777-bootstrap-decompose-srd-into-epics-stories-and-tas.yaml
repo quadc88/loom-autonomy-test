@@ -36,7 +36,7 @@ description: |-
     - Assign to: code-reviewer (for review beads) or appropriate IC
 
     Ensure the hierarchy flows logically from planning to implementation to testing to deployment.
-status: closed
+status: open
 priority: 0
 projectid: loom-bootstrap-test-5
 assignedto: ""
@@ -60,5 +60,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T06:05:04.79297926Z
-updatedat: 2026-10-16T12:21:40.778072284Z
-closedat: 2026-10-16T12:21:40.77807126Z
+updatedat: 2026-10-16T12:53:26.450725833Z
+closedat: null
