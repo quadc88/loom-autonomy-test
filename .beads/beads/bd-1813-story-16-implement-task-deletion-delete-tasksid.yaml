@@ -17,7 +17,7 @@ description: |-
     - Valid task ID returns 204 No Content
     - Non-existent task ID returns 404 with error message
     - Empty/malformed ID returns 404
-status: closed
+status: open
 priority: 0
 projectid: loom-bootstrap-test-5
 assignedto: ""
@@ -41,5 +41,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T09:13:22.579569113Z
-updatedat: 2026-10-16T13:04:21.065820148Z
-closedat: 2026-10-16T13:04:21.065819473Z
+updatedat: 2026-10-16T13:34:15.525624791Z
+closedat: null
