@@ -261,16 +261,53 @@ class TestTaskAPI(unittest.TestCase):
         self.assertEqual(status, 404)
         self.assertIn("error", body)
 
-    def test_method_not_allowed_patch(self):
-        status, body = self._request("PATCH", "/tasks")
-        self.assertEqual(status, 405)
+    def test_patch_completed_true(self):
+        task_id = self._create_task("Patch me")
+        status, body = self._request("PATCH", f"/tasks/{task_id}", {"completed": True})
+        self.assertEqual(status, 200)
+        self.assertTrue(body["done"])
+        self.assertIn("updated_at", body)
+
+    def test_patch_completed_false(self):
+        task_id = self._create_task("Unpatch me")
+        self._request("PUT", f"/tasks/{task_id}")
+        status, body = self._request("PATCH", f"/tasks/{task_id}", {"completed": False})
+        self.assertEqual(status, 200)
+        self.assertFalse(body["done"])
+
+    def test_patch_not_found(self):
+        status, body = self._request("PATCH", "/tasks/999", {"completed": True})
+        self.assertEqual(status, 404)
         self.assertIn("error", body)
 
-    def test_method_not_allowed_patch_with_id(self):
-        task_id = self._create_task("Patch me")
-        status, body = self._request("PATCH", f"/tasks/{task_id}")
-        self.assertEqual(status, 405)
+    def test_patch_missing_body(self):
+        task_id = self._create_task("Body test")
+        req = urllib.request.Request(BASE_URL + f"/tasks/{task_id}", method="PATCH")
+        with self.assertRaises(urllib.error.HTTPError) as ctx:
+            urllib.request.urlopen(req)
+        self.assertEqual(ctx.exception.code, 400)
+
+    def test_patch_invalid_json(self):
+        task_id = self._create_task("Json test")
+        req = urllib.request.Request(BASE_URL + f"/tasks/{task_id}", data=b"{bad", method="PATCH")
+        req.add_header("Content-Type", "application/json")
+        with self.assertRaises(urllib.error.HTTPError) as ctx:
+            urllib.request.urlopen(req)
+        self.assertEqual(ctx.exception.code, 400)
+
+    def test_patch_missing_completed_field(self):
+        task_id = self._create_task("Field test")
+        status, body = self._request("PATCH", f"/tasks/{task_id}", {"title": "x"})
+        self.assertEqual(status, 400)
         self.assertIn("error", body)
+
+    def test_patch_updated_at_changes(self):
+        task_id = self._create_task("Time test")
+        status1, body1 = self._request("PATCH", f"/tasks/{task_id}", {"completed": True})
+        self.assertEqual(status1, 200)
+        import time; time.sleep(0.01)
+        status2, body2 = self._request("GET", f"/tasks/{task_id}")
+        self.assertEqual(body2["updated_at"], body1["updated_at"])
 
     def test_delete_then_get_returns_404(self):
         task_id = self._create_task("Gone")

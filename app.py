@@ -2,7 +2,8 @@
 """Minimal production-quality Task REST API using Python stdlib."""
 
 import json
-import uuid
+import threading
+from datetime import datetime, timezone
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from typing import Any
 
@@ -13,39 +14,61 @@ class TaskStore:
     def __init__(self) -> None:
         self._tasks: dict[str, dict[str, Any]] = {}
         self._counter: int = 0
+        self._lock = threading.Lock()
 
     def create(self, title: str) -> dict[str, Any]:
         if not title.strip():
             raise ValueError("title is required")
-        self._counter += 1
-        task: dict[str, Any] = {
-            "id": str(self._counter),
-            "title": title,
-            "done": False,
-        }
-        self._tasks[task["id"]] = task
-        return task
+        with self._lock:
+            self._counter += 1
+            now = datetime.now(timezone.utc).isoformat()
+            task: dict[str, Any] = {
+                "id": str(self._counter),
+                "title": title,
+                "done": False,
+                "created_at": now,
+                "updated_at": now,
+            }
+            self._tasks[task["id"]] = task
+            return task
 
     def list_all(self) -> list[dict[str, Any]]:
-        return list(self._tasks.values())
+        with self._lock:
+            return list(self._tasks.values())
 
     def get(self, task_id: str) -> dict[str, Any]:
-        task = self._tasks.get(task_id)
-        if task is None:
-            raise KeyError(task_id)
-        return task
+        with self._lock:
+            task = self._tasks.get(task_id)
+            if task is None:
+                raise KeyError(task_id)
+            return task
 
     def mark_done(self, task_id: str) -> dict[str, Any]:
-        task = self._tasks.get(task_id)
-        if task is None:
-            raise KeyError(task_id)
-        task["done"] = True
-        return task
+        with self._lock:
+            task = self._tasks.get(task_id)
+            if task is None:
+                raise KeyError(task_id)
+            task["done"] = True
+            task["updated_at"] = datetime.now(timezone.utc).isoformat()
+            return task
+
+    def patch(self, task_id: str, data: dict[str, Any]) -> dict[str, Any]:
+        with self._lock:
+            task = self._tasks.get(task_id)
+            if task is None:
+                raise KeyError(task_id)
+            if "completed" in data:
+                if not isinstance(data["completed"], bool):
+                    raise ValueError("completed must be a boolean")
+                task["done"] = data["completed"]
+            task["updated_at"] = datetime.now(timezone.utc).isoformat()
+            return task
 
     def delete(self, task_id: str) -> None:
-        if task_id not in self._tasks:
-            raise KeyError(task_id)
-        del self._tasks[task_id]
+        with self._lock:
+            if task_id not in self._tasks:
+                raise KeyError(task_id)
+            del self._tasks[task_id]
 
 
 store = TaskStore()
@@ -129,7 +152,30 @@ class TaskHandler(BaseHTTPRequestHandler):
             _json_response(self, 404, {"error": "task not found"})
 
     def do_PATCH(self) -> None:
-        _json_response(self, 405, {"error": "method not allowed"})
+        resource, task_id = self._parse_path()
+        if resource != "task" or not task_id:
+            _json_response(self, 404, {"error": "not found"})
+            return
+        try:
+            length = int(self.headers.get("Content-Length", 0))
+            if length == 0:
+                _json_response(self, 400, {"error": "request body is required"})
+                return
+            body = json.loads(self.rfile.read(length))
+            if not isinstance(body, dict):
+                _json_response(self, 400, {"error": "request body must be JSON object"})
+                return
+            if "completed" not in body:
+                _json_response(self, 400, {"error": "completed field is required"})
+                return
+            task = store.patch(task_id, body)
+            _json_response(self, 200, task)
+        except json.JSONDecodeError:
+            _json_response(self, 400, {"error": "invalid JSON"})
+        except ValueError as e:
+            _json_response(self, 400, {"error": str(e)})
+        except KeyError:
+            _json_response(self, 404, {"error": "task not found"})
 
     def log_message(self, format: str, *args: Any) -> None:  # type: ignore[override]
         print(f"{self.address_string()} - {format % args}")
