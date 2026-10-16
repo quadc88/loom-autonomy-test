@@ -1,0 +1,41 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3277
+type: story
+title: 'Story 1.2: Task Creation Endpoint'
+description: |-
+    Implement POST /tasks endpoint for creating new tasks.
+
+    Tasks:
+    - [ ] Create handlers/task_handler.go with HTTP handler functions
+    - [ ] Implement POST /tasks handler function
+    - [ ] Parse JSON request body using encoding/json
+    - [ ] Validate input: title required, max 255 chars; description optional, max 10000 chars
+    - [ ] Return 201 Created with task JSON on success
+    - [ ] Return 400 Bad Request with {"error": "message"} on validation failure
+    - [ ] Set Content-Type: application/json header
+
+    Acceptance Criteria:
+    - Returns 201 with created task JSON containing id, title, description, completed, timestamps
+    - Returns 400 with clear error message for missing/empty title or excessive length
+    - Content-Type header is application/json
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-5c47693c
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T07:37:54.379003557Z
+updatedat: 2026-10-16T08:31:50.015806114Z
+closedat: null
