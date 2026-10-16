@@ -20,7 +20,7 @@ description: |-
 status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-fe80dd0b
+assignedto: exec-loom-bootstrap-test-5-5c47693c
 blockedby: []
 blocks: []
 relatedto: []
@@ -41,5 +41,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T09:13:22.579569113Z
-updatedat: 2026-10-16T13:34:19.044878394Z
+updatedat: 2026-10-16T13:34:22.42546185Z
 closedat: null
