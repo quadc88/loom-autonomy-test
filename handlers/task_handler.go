@@ -119,6 +119,10 @@ func (h *TaskHandler) GetTask(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "task ID is required")
 		return
 	}
+	if !uuidRegex.MatchString(id) {
+		writeError(w, http.StatusBadRequest, "invalid task ID format")
+		return
+	}
 	task, err := h.store.Get(id)
 	if err != nil {
 		writeError(w, http.StatusNotFound, "task not found")
