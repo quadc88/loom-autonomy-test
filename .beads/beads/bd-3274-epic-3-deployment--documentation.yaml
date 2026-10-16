@@ -1,0 +1,47 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3274
+type: epic
+title: 'Epic 3: Deployment & Documentation'
+description: |-
+    Set up deployment infrastructure and documentation.
+
+    Stories in this epic:
+    - Story 3.1: Dockerfile with Multi-Stage Build
+    - Story 3.2: README Documentation
+    - Story 3.3: CORS and Middleware
+
+    Priority: P2 (Nice to have)
+    Assignee: devops-engineer / technical-writer
+
+    Acceptance Criteria:
+    - Docker image builds and runs successfully
+    - README includes setup, run, test, and API usage instructions
+    - CORS middleware configured
+    - Panic recovery middleware implemented
+    - Request logging working
+status: open
+priority: 2
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-10-16T13:23:20.203712208Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"message\":\"You have used up today''s text quota and are now limited to 1 request every minute. Try again after 13:24:02. (request id: 20261016132320159296263tHkkGIjo)\",\"type\":\"AgnesAI_error\",\"param\":\"\",\"code\":\"rate_limit_exceeded\"}}","dispatch":1}]'
+    last_run_at: "2026-10-16T13:23:20Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"message":"You have used up today''s text quota and are now limited to 1 request every minute. Try again after 13:24:02. (request id: 20261016132320159296263tHkkGIjo)","type":"AgnesAI_error","param":"","code":"rate_limit_exceeded"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T07:32:46.74695383Z
+updatedat: 2026-10-16T13:23:20.203726995Z
+closedat: null
