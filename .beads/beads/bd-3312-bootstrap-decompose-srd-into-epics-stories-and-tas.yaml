@@ -1,0 +1,48 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3312
+type: task
+title: '[Bootstrap] Decompose SRD into Epics, Stories, and Tasks'
+description: |-
+    Based on the System Requirements Document (SRD) at plans/SRD.md, create a comprehensive bead hierarchy that decomposes the system into epics, stories, and tasks.
+
+    The SRD covers:
+    - System architecture with in-memory store and net/http handlers
+    - Data models: Task entity with ID, title, description, completed, timestamps
+    - API contracts: POST /tasks, GET /tasks, GET /tasks/{id}, PATCH /tasks/{id}/complete, DELETE /tasks/{id}, GET /health
+    - Infrastructure: Docker multi-stage build, port 8080
+    - Security: Input validation, JSON responses
+    - Implementation: Go standard library only, sync.RWMutex for concurrency
+
+    Create the decomposition:
+    1. **Epics**: Major functional areas with clear titles
+    2. **Stories**: User-facing features in 'As a...I want...So that...' format
+    3. **Tasks**: Actionable, testable items with acceptance criteria and complexity estimates
+
+    Priority levels: P0 (MVP must-haves), P1 (should-haves), P2 (nice-to-haves)
+    Assign priority 1 for immediate execution.
+status: open
+priority: 1
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-10-16T13:21:34.034850623Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"message\":\"You have used up today''s text quota and are now limited to 1 request every minute. Try again after 13:21:57. (request id: 202610161321339943225376HZVI6JQ)\",\"type\":\"AgnesAI_error\",\"param\":\"\",\"code\":\"rate_limit_exceeded\"}}","dispatch":1}]'
+    last_run_at: "2026-10-16T13:21:34Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"message":"You have used up today''s text quota and are now limited to 1 request every minute. Try again after 13:21:57. (request id: 202610161321339943225376HZVI6JQ)","type":"AgnesAI_error","param":"","code":"rate_limit_exceeded"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T12:58:09.361111874Z
+updatedat: 2026-10-16T13:21:34.034867417Z
+closedat: null
