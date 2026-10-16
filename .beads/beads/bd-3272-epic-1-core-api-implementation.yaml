@@ -28,10 +28,10 @@ description: |-
     - Return JSON with proper HTTP status codes
     - Validate: title required (max 255 chars), description optional (max 10000 chars)
     - ISO 8601 UTC timestamps
-status: open
+status: in_progress
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-d5fa9b83
 blockedby: []
 blocks: []
 relatedto: []
@@ -43,5 +43,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-10-16T07:28:56.062313432Z
-updatedat: 2026-10-16T08:47:23.094205803Z
+updatedat: 2026-10-16T08:48:15.096722892Z
 closedat: null
