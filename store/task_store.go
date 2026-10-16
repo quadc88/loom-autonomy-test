@@ -114,10 +114,6 @@ func (s *InMemoryStore) Replace(id string, task *models.Task) (*models.Task, err
 		return nil, fmt.Errorf("task not found")
 	}
 
-	if err := task.ValidateReplace(); err != nil {
-		return nil, err
-	}
-
 	task.ID = id
 	task.CreatedAt = s.tasks[id].CreatedAt
 	task.UpdatedAt = time.Now().UTC()
