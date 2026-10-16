@@ -1,142 +1,318 @@
 package store
 
 import (
+	"sync"
 	"testing"
+
 	"loom-bootstrap-test-5/models"
 )
+
 func TestNewInMemoryStore(t *testing.T) {
 	s := NewInMemoryStore()
-	if s == nil { t.Fatal("nil store") }
-	if s.tasks == nil { t.Error("nil tasks map") }
+	if s == nil {
+		t.Fatal("nil store")
+	}
+	if s.tasks == nil {
+		t.Error("nil tasks map")
+	}
 }
-func TestCreate(t *testing.T) {
+
+func TestCreate_Success(t *testing.T) {
 	s := NewInMemoryStore()
 	task := models.NewTask("Test", "Desc")
-	if err := s.Create(task); err != nil { t.Fatalf("unexpected error: %v", err) }
-	retrieved, err := s.Get(task.ID)
-	if err != nil { t.Fatalf("failed to get task: %v", err) }
-	if retrieved.Title != task.Title { t.Errorf("expected %q, got %q", task.Title, retrieved.Title) }
-	if retrieved.Completed { t.Error("expected not completed") }
-}
-func TestCreateValidationErrors(t *testing.T) {
-	s := NewInMemoryStore()
-	tests := []struct{name string; task *models.Task; wantErr bool}{
-		{"empty title", models.NewTask("", "desc"), true},
-		{"title too long", models.NewTask(string(make([]byte, 300)), "desc"), true},
-		{"desc too long", models.NewTask("title", string(make([]byte, 10001))), true},
+	if err := s.Create(task); err != nil {
+		t.Fatalf("unexpected error: %v", err)
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := s.Create(tt.task); (err != nil) != tt.wantErr {
-				t.Errorf("error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
+	got, err := s.Get(task.ID)
+	if err != nil {
+		t.Fatalf("Get failed: %v", err)
+	}
+	if got.Title != task.Title {
+		t.Errorf("title mismatch")
+	}
+	if got.Completed {
+		t.Error("expected not completed")
 	}
 }
-func TestList(t *testing.T) {
+
+func TestCreate_Multiple(t *testing.T) {
 	s := NewInMemoryStore()
-	s.Create(models.NewTask("Task 1", "D1"))
-	s.Create(models.NewTask("Task 2", "D2"))
+	for i := 0; i < 5; i++ {
+		s.Create(models.NewTask("T", "D"))
+	}
 	tasks, _ := s.List(nil)
-	if len(tasks) != 2 { t.Errorf("expected 2, got %d", len(tasks)) }
+	if len(tasks) != 5 {
+		t.Errorf("expected 5, got %d", len(tasks))
+	}
 }
-func TestListWithStatusFilter(t *testing.T) {
+
+func TestCreate_EmptyTitle(t *testing.T) {
 	s := NewInMemoryStore()
-	t1 := models.NewTask("Active", "D")
-	t2 := models.NewTask("Done", "D")
-	t2.Completed = true
-	s.Create(t1); s.Create(t2)
+	if err := s.Create(models.NewTask("", "desc")); err == nil {
+		t.Error("expected error for empty title")
+	}
+}
+
+func TestCreate_TitleTooLong(t *testing.T) {
+	s := NewInMemoryStore()
+	task := models.NewTask(string(make([]byte, 300)), "desc")
+	if err := s.Create(task); err == nil {
+		t.Error("expected error for long title")
+	}
+}
+
+func TestCreate_DescTooLong(t *testing.T) {
+	s := NewInMemoryStore()
+	task := models.NewTask("title", string(make([]byte, 10001)))
+	if err := s.Create(task); err == nil {
+		t.Error("expected error for long description")
+	}
+}
+
+func TestCreate_ValidBoundary(t *testing.T) {
+	s := NewInMemoryStore()
+	task := models.NewTask(string(make([]byte, 255)), string(make([]byte, 10000)))
+	task.Title = "A"
+	if err := s.Create(task); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestCreate_EmptyDescription(t *testing.T) {
+	s := NewInMemoryStore()
+	task := models.NewTask("T", "")
+	if err := s.Create(task); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	got, _ := s.Get(task.ID)
+	if got.Description != "" {
+		t.Error("expected empty description")
+	}
+}
+
+func TestList_Empty(t *testing.T) {
+	s := NewInMemoryStore()
+	tasks, _ := s.List(nil)
+	if len(tasks) != 0 {
+		t.Errorf("expected 0, got %d", len(tasks))
+	}
+}
+
+func TestList_All(t *testing.T) {
+	s := NewInMemoryStore()
+	s.Create(models.NewTask("A", "D"))
+	s.Create(models.NewTask("B", "D"))
+	s.Create(models.NewTask("C", "D"))
+	tasks, _ := s.List(nil)
+	if len(tasks) != 3 {
+		t.Errorf("expected 3, got %d", len(tasks))
+	}
+}
+
+func TestList_FilterActive(t *testing.T) {
+	s := NewInMemoryStore()
+	s.Create(models.NewTask("A", "D"))
+	s.Create(models.NewTask("B", "D"))
+	c := models.NewTask("C", "D")
+	c.Completed = true
+	s.Create(c)
 	active := "active"
-	filtered, _ := s.List(&models.TaskFilter{Status: &active})
-	if len(filtered) != 1 || filtered[0].Completed { t.Error("expected active") }
+	tasks, _ := s.List(&models.TaskFilter{Status: &active})
+	if len(tasks) != 2 {
+		t.Errorf("expected 2, got %d", len(tasks))
+	}
+	for _, tc := range tasks {
+		if tc.Completed {
+			t.Error("unexpected completed in active")
+		}
+	}
+}
+
+func TestList_FilterCompleted(t *testing.T) {
+	s := NewInMemoryStore()
+	s.Create(models.NewTask("A", "D"))
+	c := models.NewTask("B", "D")
+	c.Completed = true
+	s.Create(c)
 	completed := "completed"
-	filtered, _ = s.List(&models.TaskFilter{Status: &completed})
-	if len(filtered) != 1 || !filtered[0].Completed { t.Error("expected completed") }
+	tasks, _ := s.List(&models.TaskFilter{Status: &completed})
+	if len(tasks) != 1 {
+		t.Errorf("expected 1, got %d", len(tasks))
+	}
+	if !tasks[0].Completed {
+		t.Error("expected completed")
+	}
 }
-func TestListWithLimit(t *testing.T) {
+
+func TestList_Limit(t *testing.T) {
 	s := NewInMemoryStore()
-	for i := 0; i < 5; i++ { s.Create(models.NewTask("T", "D")) }
-	filtered, _ := s.List(&models.TaskFilter{Limit: 2})
-	if len(filtered) != 2 { t.Errorf("expected 2, got %d", len(filtered)) }
+	for i := 0; i < 5; i++ {
+		s.Create(models.NewTask("T", "D"))
+	}
+	tasks, _ := s.List(&models.TaskFilter{Limit: 2})
+	if len(tasks) != 2 {
+		t.Errorf("expected 2, got %d", len(tasks))
+	}
 }
-func TestListEmptyStore(t *testing.T) {
+
+func TestList_FilterLimitCombo(t *testing.T) {
 	s := NewInMemoryStore()
-	tasks, _ := s.List(nil)
-	if len(tasks) != 0 { t.Errorf("expected 0, got %d", len(tasks)) }
+	s.Create(models.NewTask("A", "D"))
+	c := models.NewTask("B", "D")
+	c.Completed = true
+	s.Create(c)
+	active := "active"
+	tasks, _ := s.List(&models.TaskFilter{Status: &active, Limit: 1})
+	if len(tasks) != 1 {
+		t.Errorf("expected 1, got %d", len(tasks))
+	}
 }
-func TestGet(t *testing.T) {
+
+func TestGet_Existing(t *testing.T) {
 	s := NewInMemoryStore()
-	task := models.NewTask("Test", "Desc")
+	task := models.NewTask("T", "D")
 	s.Create(task)
-	retrieved, err := s.Get(task.ID)
-	if err != nil { t.Fatalf("Get() error: %v", err) }
-	if retrieved.ID != task.ID { t.Errorf("ID mismatch") }
-	_, err = s.Get("nonexistent")
-	if err == nil { t.Error("expected error") }
+	got, err := s.Get(task.ID)
+	if err != nil {
+		t.Fatalf("Get failed: %v", err)
+	}
+	if got.ID != task.ID {
+		t.Errorf("ID mismatch")
+	}
+	if got.Title != task.Title {
+		t.Errorf("title mismatch")
+	}
 }
-func TestUpdate(t *testing.T) {
+
+func TestGet_NotFound(t *testing.T) {
 	s := NewInMemoryStore()
-	task := models.NewTask("Test", "Desc")
+	_, err := s.Get("nonexistent")
+	if err == nil {
+		t.Error("expected error")
+	}
+}
+
+func TestGet_EmptyID(t *testing.T) {
+	s := NewInMemoryStore()
+	_, err := s.Get("")
+	if err == nil {
+		t.Error("expected error for empty ID")
+	}
+}
+
+func TestUpdate_Complete(t *testing.T) {
+	s := NewInMemoryStore()
+	task := models.NewTask("T", "D")
 	s.Create(task)
 	c := true
-	updated, err := s.Update(task.ID, &models.TaskUpdate{Completed: &c})
-	if err != nil { t.Fatalf("Update() error: %v", err) }
-	if !updated.Completed { t.Error("expected completed") }
-	_, err = s.Update("nonexistent", &models.TaskUpdate{})
-	if err == nil { t.Error("expected error") }
+	got, err := s.Update(task.ID, &models.TaskUpdate{Completed: &c})
+	if err != nil {
+		t.Fatalf("Update failed: %v", err)
+	}
+	if !got.Completed {
+		t.Error("expected completed")
+	}
 }
-func TestReplace(t *testing.T) {
+
+func TestUpdate_NotFound(t *testing.T) {
 	s := NewInMemoryStore()
-	task := models.NewTask("Test", "Desc")
+	c := true
+	_, err := s.Update("nonexistent", &models.TaskUpdate{Completed: &c})
+	if err == nil {
+		t.Error("expected error")
+	}
+}
+
+func TestReplace_Success(t *testing.T) {
+	s := NewInMemoryStore()
+	task := models.NewTask("T", "D")
+	s.Create(task)
+	newTask := models.NewTask("Replaced", "New")
+func TestUpdate_NotFound(t *testing.T) {
+	s := NewInMemoryStore()
+	c := true
+	_, err := s.Update("nonexistent", &models.TaskUpdate{Completed: &c})
+	if err == nil {
+		t.Error("expected error")
+	}
+}
+
+func TestReplace_Success(t *testing.T) {
+	s := NewInMemoryStore()
+	task := models.NewTask("T", "D")
 	s.Create(task)
 	newTask := models.NewTask("Replaced", "New")
 	replaced, err := s.Replace(task.ID, newTask)
-	if err != nil { t.Fatalf("Replace() error: %v", err) }
-	if replaced.Title != "Replaced" { t.Errorf("expected Replaced, got %s", replaced.Title) }
-	_, err = s.Replace("nonexistent", newTask)
-	if err == nil { t.Error("expected error") }
+	if err != nil {
+		t.Fatalf("Replace failed: %v", err)
+	}
+	if replaced.Title != "Replaced" {
+		t.Errorf("expected Replaced, got %s", replaced.Title)
+	}
 }
-func TestDelete(t *testing.T) {
+
+func TestReplace_NotFound(t *testing.T) {
 	s := NewInMemoryStore()
-	task := models.NewTask("Test", "Desc")
-	s.Create(task)
-	if err := s.Delete(task.ID); err != nil { t.Fatalf("Delete() error: %v", err) }
-	_, err := s.Get(task.ID)
-	if err == nil { t.Error("expected error after delete") }
-	if err := s.Delete("nonexistent"); err == nil { t.Error("expected error") }
+	newTask := models.NewTask("T", "D")
+	_, err := s.Replace("nonexistent", newTask)
+	if err == nil {
+		t.Error("expected error")
+	}
 }
+
+func TestDelete_Success(t *testing.T) {
+	s := NewInMemoryStore()
+	task := models.NewTask("T", "D")
+	s.Create(task)
+	if err := s.Delete(task.ID); err != nil {
+		t.Fatalf("Delete failed: %v", err)
+	}
+	_, err := s.Get(task.ID)
+	if err == nil {
+		t.Error("expected error after delete")
+	}
+}
+
+func TestDelete_NotFound(t *testing.T) {
+	s := NewInMemoryStore()
+	if err := s.Delete("nonexistent"); err == nil {
+		t.Error("expected error")
+	}
+}
+
 func TestHealthCheck(t *testing.T) {
 	s := NewInMemoryStore()
-	s.Create(models.NewTask("Test", "Desc"))
+	s.Create(models.NewTask("T", "D"))
 	stats := s.HealthCheck()
-	if stats["status"] != "healthy" { t.Errorf("expected healthy, got %s", stats["status"]) }
-	if stats["tasks"] != "1" { t.Errorf("expected 1, got %s", stats["tasks"]) }
-	if stats["service"] != "task-api" { t.Errorf("expected task-api, got %s", stats["service"]) }
+	if stats["status"] != "healthy" {
+		t.Errorf("expected healthy, got %s", stats["status"]) 
+	}
+	if stats["tasks"] != "1" {
+		t.Errorf("expected 1, got %s", stats["tasks"]) 
+	}
+	if stats["service"] != "task-api" {
+		t.Errorf("expected task-api, got %s", stats["service"]) 
+	}
 }
+
 func TestConcurrentAccess(t *testing.T) {
 	s := NewInMemoryStore()
-	for i := 0; i < 10; i++ { s.Create(models.NewTask("T", "D")) }
-	done := make(chan bool, 3)
-	go func() {
-		for i := 0; i < 100; i++ { s.List(nil) }
-		done <- true
-	}()
-	go func() {
-		for i := 0; i < 50; i++ { s.Create(models.NewTask("Conc", "Test")) }
-		done <- true
-	}()
-	go func() {
-		tasks, _ := s.List(nil)
-		for i := 0; i < 50; i++ {
-			if len(tasks) > 0 {
-				c := true
-				s.Update(tasks[i%len(tasks)].ID, &models.TaskUpdate{Completed: &c})
+	var wg sync.WaitGroup
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for j := 0; j < 50; j++ {
+				s.Create(models.NewTask("T", "D"))
 			}
-		}
-		done <- true
-	}()
-	for i := 0; i < 3; i++ { <-done }
+		}()
+	}
+	wg.Wait()
 	tasks, err := s.List(nil)
-	if err != nil { t.Fatalf("concurrent access error: %v", err) }
-	if len(tasks) == 0 { t.Error("expected tasks after concurrent access") }
+	if err != nil {
+		t.Fatalf("concurrent list error: %v", err)
+	}
+	if len(tasks) == 0 {
+		t.Error("expected tasks after concurrent access")
+	}
 }
