@@ -183,9 +183,3 @@ func TestGetTask_MalformedUUID_Returns400(t *testing.T) {
 		t.Errorf("expected 400 for malformed UUID, got %d", w.Code)
 	}
 }
-	var errResp map[string]string
-	json.NewDecoder(w.Body).Decode(&errResp)
-	if errResp["error"] != "task not found" {
-		t.Errorf("expected 'task not found' error, got %s", errResp["error"])
-	}
-}
