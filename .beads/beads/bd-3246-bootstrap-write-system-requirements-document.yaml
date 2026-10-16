@@ -18,10 +18,10 @@ description: |-
 
     Save to plans/SRD.md and commit.
     Then create a bead for the Technical Project Manager titled "[Bootstrap] Decompose SRD into Epics, Stories, and Tasks" assigned to technical-project-manager, instructing them to create the full bead hierarchy from the SRD.
-status: in_progress
+status: blocked
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-c5eaf1ca
+assignedto: agent-1787558394-Engineering Manager (Default)
 blockedby: []
 blocks: []
 relatedto: []
@@ -36,11 +36,14 @@ context:
     loop_detected: "true"
     loop_detected_at: "2026-10-16T20:41:31Z"
     loop_detected_reason: Repeated rate limit errors (10 attempts) - exhausted provider quota. Consider increasing the budget or resetting the counter.
+    ralph_blocked_at: "2026-10-16T20:41:34Z"
+    ralph_blocked_reason: 'auto-blocked by Ralph: Repeated rate limit errors (10 attempts) - exhausted provider quota. Consider increasing the budget or resetting the counter.'
     recovered_at: "2026-10-16T20:10:26Z"
     recovery_reason: transient infrastructure failure resolved — re-queued by recovery sweep
+    redispatch_requested: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-10-16T03:41:27.427521875Z
-updatedat: 2026-10-16T20:41:33.79935634Z
+updatedat: 2026-10-16T20:41:34.673477621Z
 closedat: null
