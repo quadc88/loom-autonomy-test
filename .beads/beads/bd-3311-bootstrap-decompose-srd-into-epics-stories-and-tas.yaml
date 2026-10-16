@@ -23,20 +23,25 @@ description: |-
     - Estimated complexity for each task
 
     Create the bead hierarchy and assign appropriate priorities. This will drive the implementation work for the Task REST API project.
-status: in_progress
+status: open
 priority: 1
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-27c1dc11
+assignedto: ""
 blockedby: []
 blocks: []
 relatedto: []
 parent: ""
 children: []
 tags: []
-context: {}
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-10-16T12:24:13.760775251Z","error":"LLM call failed on iteration 4: unexpected status code 429: {\"error\":{\"code\":\"\",\"message\":\"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 202610161224137540192576ONiVYm5)\",\"type\":\"AgnesAI_error\"}}","dispatch":1}]'
+    last_run_at: "2026-10-16T12:24:13Z"
+    last_run_error: 'LLM call failed on iteration 4: unexpected status code 429: {"error":{"code":"","message":"You’ve reached the API rate limit for free users. Upgrade to a Token Plan to unlock higher limits and continue using the API without interruption. (request id: 202610161224137540192576ONiVYm5)","type":"AgnesAI_error"}}'
+    loop_detected: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-10-16T12:22:09.088636555Z
-updatedat: 2026-10-16T12:24:10.26826871Z
+updatedat: 2026-10-16T12:24:13.760788146Z
 closedat: null
