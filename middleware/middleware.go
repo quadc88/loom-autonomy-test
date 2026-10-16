@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -32,10 +33,7 @@ func CORS(opts CORSOptions) func(http.Handler) http.Handler {
 				w.Header().Set("Access-Control-Allow-Origin", origin)
 				break // Use first allowed origin
 			}
-			w.Header().Set("Access-Control-Allow-Methods", fmt.Sprintf("%s", opts.AllowedMethods[0]))
-			for i := 1; i < len(opts.AllowedMethods); i++ {
-				w.Header().Set("Access-Control-Allow-Methods", w.Header().Get("Access-Control-Allow-Methods")+", "+opts.AllowedMethods[i])
-			}
+			w.Header().Set("Access-Control-Allow-Methods", strings.Join(opts.AllowedMethods, ", "))
 			w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 			if opts.AllowCredentials {
 				w.Header().Set("Access-Control-Allow-Credentials", "true")
