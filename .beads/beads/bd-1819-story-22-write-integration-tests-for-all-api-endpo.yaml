@@ -40,11 +40,11 @@ context:
     loop_detected: "false"
     loop_detected_at: ""
     loop_detected_reason: ""
-    recovered_at: "2026-10-16T05:35:39Z"
+    recovered_at: "2026-10-16T05:39:44Z"
     recovery_reason: transient infrastructure failure resolved — re-queued by recovery sweep
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T10:53:17.243113957Z
-updatedat: 2026-10-16T05:35:39.772623676Z
+updatedat: 2026-10-16T05:39:45.43827101Z
 closedat: null
