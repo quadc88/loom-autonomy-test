@@ -17,10 +17,10 @@ description: |-
     Acceptance Criteria:
     - GET /health returns 200 with {"status": "healthy", ...}
     - Response includes task count and service name
-status: in_progress
+status: blocked
 priority: 0
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-7afbde8c
+assignedto: agent-1787558394-Engineering Manager (Default)
 blockedby: []
 blocks: []
 relatedto: []
@@ -35,11 +35,14 @@ context:
     loop_detected: "true"
     loop_detected_at: "2026-10-16T16:06:23Z"
     loop_detected_reason: Repeated rate limit errors (10 attempts) - exhausted provider quota. Consider increasing the budget or resetting the counter.
+    ralph_blocked_at: "2026-10-16T16:06:34Z"
+    ralph_blocked_reason: 'auto-blocked by Ralph: Repeated rate limit errors (10 attempts) - exhausted provider quota. Consider increasing the budget or resetting the counter.'
     recovered_at: "2026-10-16T15:36:17Z"
     recovery_reason: transient infrastructure failure resolved — re-queued by recovery sweep
+    redispatch_requested: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T09:13:25.753819426Z
-updatedat: 2026-10-16T16:06:26.639444337Z
+updatedat: 2026-10-16T16:06:34.673908832Z
 closedat: null
