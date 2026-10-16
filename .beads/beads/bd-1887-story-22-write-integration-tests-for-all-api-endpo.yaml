@@ -22,10 +22,10 @@ description: |-
     - Status codes verified
     - Response bodies validated
     - Error messages checked
-status: open
+status: in_progress
 priority: 1
 projectid: loom-bootstrap-test-5
-assignedto: ""
+assignedto: exec-loom-bootstrap-test-5-1e62da17
 blockedby: []
 blocks: []
 relatedto: []
@@ -40,11 +40,11 @@ context:
     loop_detected: "false"
     loop_detected_at: ""
     loop_detected_reason: ""
-    recovered_at: "2026-10-16T04:30:08Z"
+    recovered_at: "2026-10-16T04:24:44Z"
     recovery_reason: transient infrastructure failure resolved — re-queued by recovery sweep
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-21T01:04:16.287396307Z
-updatedat: 2026-10-16T04:41:14.235046819Z
+updatedat: 2026-10-16T04:41:22.623831362Z
 closedat: null
