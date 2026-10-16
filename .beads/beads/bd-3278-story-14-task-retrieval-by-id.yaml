@@ -1,0 +1,39 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3278
+type: story
+title: 'Story 1.4: Task Retrieval by ID'
+description: |-
+    Implement GET /tasks/{id} endpoint for retrieving a specific task.
+
+    Tasks:
+    - [ ] Implement GET /tasks/{id} handler function
+    - [ ] Parse UUID from URL path
+    - [ ] Return task JSON if found
+    - [ ] Return 404 if task not found
+    - [ ] Handle invalid UUID format gracefully
+
+    Acceptance Criteria:
+    - Returns 200 with task JSON when found
+    - Returns 404 with {"error": "task not found"} when not found
+    - Handles invalid UUID format with 400 or 404
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-d5fa9b83
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T07:38:34.663973652Z
+updatedat: 2026-10-16T08:07:34.585598464Z
+closedat: null
