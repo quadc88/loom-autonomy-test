@@ -24,7 +24,7 @@ description: |-
     - UUID v4 for task IDs
     - ISO 8601 timestamps
     - JSON responses with proper HTTP status codes
-status: blocked
+status: closed
 priority: 0
 projectid: loom-bootstrap-test-5
 assignedto: ""
@@ -48,5 +48,5 @@ duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T06:55:04.685215721Z
-updatedat: 2026-10-16T06:45:31.139629302Z
-closedat: null
+updatedat: 2026-10-16T06:45:37.534583243Z
+closedat: 2026-10-16T06:45:37.534582725Z
