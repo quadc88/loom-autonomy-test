@@ -1,0 +1,40 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3302
+type: story
+title: 'Story 1.7: GET /health - Health Check'
+description: |-
+    Implement the GET /health endpoint for health checks.
+
+    Tasks:
+    - [ ] Implement GET /health handler
+    - [ ] Return healthy status JSON
+
+    Acceptance Criteria:
+    - Returns 200 with {"status": "healthy"}
+    - Response time < 10ms
+    - No authentication required
+
+    Priority: P0
+    Complexity: Trivial
+    Estimated: 15 minutes
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-d5fa9b83
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T11:54:16.15400781Z
+updatedat: 2026-10-16T12:09:00.185539007Z
+closedat: null
