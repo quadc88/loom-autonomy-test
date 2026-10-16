@@ -20,10 +20,10 @@ description: |-
     - README covers local/Docker setup, all endpoints, and usage examples
     - CORS middleware configurable via environment variables
     - Panic recovery middleware in place
-status: in_progress
+status: blocked
 priority: 2
 projectid: loom-bootstrap-test-5
-assignedto: exec-loom-bootstrap-test-5-cb38c64e
+assignedto: agent-1787558394-Engineering Manager (Default)
 blockedby: []
 blocks: []
 relatedto: []
@@ -38,11 +38,14 @@ context:
     loop_detected: "true"
     loop_detected_at: "2026-10-16T16:02:18Z"
     loop_detected_reason: Repeated rate limit errors (10 attempts) - exhausted provider quota. Consider increasing the budget or resetting the counter.
+    ralph_blocked_at: "2026-10-16T16:02:24Z"
+    ralph_blocked_reason: 'auto-blocked by Ralph: Repeated rate limit errors (10 attempts) - exhausted provider quota. Consider increasing the budget or resetting the counter.'
     recovered_at: "2026-10-16T15:30:30Z"
     recovery_reason: transient infrastructure failure resolved — re-queued by recovery sweep
+    redispatch_requested: "false"
 duedate: null
 milestoneid: ""
 estimatedtime: 0
 createdat: 2026-09-20T21:17:57.647326879Z
-updatedat: 2026-10-16T16:02:21.757974821Z
+updatedat: 2026-10-16T16:02:24.674236964Z
 closedat: null
