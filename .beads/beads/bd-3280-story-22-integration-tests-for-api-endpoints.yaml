@@ -1,0 +1,44 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3280
+type: story
+title: 'Story 2.2: Integration Tests for API Endpoints'
+description: |-
+    Write integration tests for all API endpoints.
+
+    Tasks:
+    - [ ] Write integration test for POST /tasks (success case)
+    - [ ] Write integration test for POST /tasks (validation errors)
+    - [ ] Write integration test for GET /tasks (list all)
+    - [ ] Write integration test for GET /tasks?status=active
+    - [ ] Write integration test for GET /tasks/{id} (found)
+    - [ ] Write integration test for GET /tasks/{id} (not found)
+    - [ ] Write integration test for PATCH /tasks/{id}
+    - [ ] Write integration test for DELETE /tasks/{id}
+    - [ ] Write integration test for GET /health
+
+    Acceptance Criteria:
+    - All endpoints tested with valid and invalid inputs
+    - Status codes verified (201, 200, 204, 400, 404)
+    - Response bodies validated as JSON
+    - Error cases covered
+status: in_progress
+priority: 1
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-66add52f
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T07:39:27.428639967Z
+updatedat: 2026-10-16T10:26:04.121191572Z
+closedat: null
