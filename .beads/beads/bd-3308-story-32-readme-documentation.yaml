@@ -1,0 +1,52 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3308
+type: story
+title: 'Story 3.2: README Documentation'
+description: |-
+    Write comprehensive README documentation for the Task REST API.
+
+    Tasks:
+    - [ ] Write project overview and description
+    - [ ] Document local setup and run instructions (go run .)
+    - [ ] Document Docker build and run instructions
+    - [ ] Document test running instructions (go test ./...)
+    - [ ] Document all API endpoints with examples
+    - [ ] Include curl examples for each endpoint
+    - [ ] Document the data model and validation rules
+    - [ ] Add project structure overview
+
+    Acceptance Criteria:
+    - README is comprehensive and clear
+    - Includes all required sections (overview, setup, API usage, tests)
+    - API usage examples work when copied
+    - Instructions are accurate and up-to-date
+
+    Priority: P2
+    Complexity: Easy
+    Estimated: 1-2 hours
+status: open
+priority: 2
+projectid: loom-bootstrap-test-5
+assignedto: ""
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context:
+    dispatch_count: "1"
+    error_history: '[{"timestamp":"2026-10-16T13:22:52.560207506Z","error":"LLM call failed on iteration 1: unexpected status code 429: {\"error\":{\"message\":\"You have used up today''s text quota and are now limited to 1 request every minute. Try again after 13:22:58. (request id: 20261016132252516291501vgaJbuE0)\",\"type\":\"AgnesAI_error\",\"param\":\"\",\"code\":\"rate_limit_exceeded\"}}","dispatch":1}]'
+    last_run_at: "2026-10-16T13:22:52Z"
+    last_run_error: 'LLM call failed on iteration 1: unexpected status code 429: {"error":{"message":"You have used up today''s text quota and are now limited to 1 request every minute. Try again after 13:22:58. (request id: 20261016132252516291501vgaJbuE0)","type":"AgnesAI_error","param":"","code":"rate_limit_exceeded"}}'
+    loop_detected: "false"
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T11:57:50.785006032Z
+updatedat: 2026-10-16T13:22:52.560220601Z
+closedat: null
