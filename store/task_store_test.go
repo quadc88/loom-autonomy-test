@@ -53,6 +53,36 @@ func TestCreateTaskValidation(t *testing.T) {
 	}
 }
 
+func TestReplaceTask(t *testing.T) {
+	s := NewInMemoryStore()
+	task := models.NewTask("Original", "Desc")
+	s.Create(task)
+
+	// Replace existing
+	replaced := &models.Task{
+		ID:          task.ID,
+		Title:       "Replaced",n		Description: "New desc",
+		Completed:   true,
+	}
+	result, err := s.Replace(task.ID, replaced)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+	if result.Title != "Replaced" {
+		t.Errorf("expected 'Replaced', got %q", result.Title)
+	}
+	if !result.Completed {
+		t.Error("expected completed=true")
+	}
+
+	// Replace non-existing
+	_, err = s.Replace("nonexistent", replaced)
+	if err == nil {
+		t.Error("expected error for non-existent task")
+	}
+}
+}
+
 func TestGetTask(t *testing.T) {
 	s := NewInMemoryStore()
 	task := models.NewTask("Test Task", "Description")
