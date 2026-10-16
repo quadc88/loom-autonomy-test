@@ -1,0 +1,41 @@
+entitymetadata:
+    schemaversion: ""
+    attributes: {}
+    migratedat: null
+    migratedfrom: ""
+id: bd-3301
+type: story
+title: 'Story 1.6: DELETE /tasks/{id} - Delete Task'
+description: |-
+    Implement the DELETE /tasks/{id} endpoint for deleting tasks.
+
+    Tasks:
+    - [ ] Implement DELETE /tasks/{id} handler
+    - [ ] Remove task from store
+    - [ ] Return 204 No Content on success
+
+    Acceptance Criteria:
+    - Returns 204 with no content on successful deletion
+    - Returns 404 with {"error": "task not found"} if task not found
+    - Task is actually removed from store (verify with GET after delete)
+
+    Priority: P0
+    Complexity: Easy
+    Estimated: 1 hour
+status: in_progress
+priority: 0
+projectid: loom-bootstrap-test-5
+assignedto: exec-loom-bootstrap-test-5-66add52f
+blockedby: []
+blocks: []
+relatedto: []
+parent: ""
+children: []
+tags: []
+context: {}
+duedate: null
+milestoneid: ""
+estimatedtime: 0
+createdat: 2026-10-16T11:54:10.237892619Z
+updatedat: 2026-10-16T12:03:08.84585265Z
+closedat: null
